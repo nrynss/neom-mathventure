@@ -1,0 +1,49 @@
+{
+    "ui": {
+        "title": "Neom Mathventure",
+        "timer": "Time",
+        "highScore": "High Score",
+        "level": "Level",
+        "score": "Score",
+        "accuracy": "Accuracy",
+        "buttons": {
+            "start": "Let's Begin! 🚀",
+            "check": "Check Answer! 🎯",
+            "playAgain": "Play Again! 🔄"
+        },
+        "gameOver": "Game Over!"
+    },
+    "mascots": {
+        "thangamma": {
+            "name": "Thangamma",
+            "greetings": [
+                ["Hello!", "Let's learn math", "Shall we begin?"],
+                ["Welcome!", "Are you ready?", "Ready to learn?"],
+                ["Hi!", "Ready to play?", "Let's learn together!"]
+            ],
+            "encouragement": [
+                ["Great!", "Very good", "Keep going!"],
+                ["Awesome!", "Well done", "Forward!"],
+                ["Fantastic!", "Excellent performance", "Wonderful!"]
+            ]
+        },
+        "kannappan": {
+            "name": "Kannappan",
+            "motivation": [
+                ["Try!", "We can do it", "Success awaits!"],
+                ["Once more!", "That's better", "You can do it!"],
+                ["No worries!", "Let's try again", "Next time!"]
+            ],
+            "celebrations": [
+                ["Victory!", "Super", "Success!"],
+                ["Amazing!", "Well done", "Brilliant!"],
+                ["Excellent!", "Perfect", "Great!"]
+            ]
+        }
+    },
+    "feedback": {
+        "correct": ["Very good!", "Perfect!", "Excellent!"],
+        "levelUp": ["Next level!", "Moving up!", "Onwards!"],
+        "gameStats": "Score: {} | Accuracy: {}%"
+    }
+}

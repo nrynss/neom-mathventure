@@ -1,0 +1,460 @@
+:root {
+    --kerala-red: #CD2626;
+    --kerala-gold: #FFD700;
+    --kerala-green: #228B22;
+    --kerala-yellow: #FFB90F;
+    --kerala-black: #1C1C1C;
+    --kathakali-green: #006400;
+    --primary-color: #21618C;
+    --secondary-color: #FF6B6B;
+    --background-color: #FFF8DC;
+    --text-color: #1C1C1C;
+    --success-color: #48BB78;
+    --error-color: #F56565;
+    --border-radius: 15px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Neue', cursive;
+    background: linear-gradient(135deg, #E8F4FF 0%, #FFE8F4 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    margin: 0;
+    position: relative;
+}
+
+/* Language Switcher */
+.language-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: 2px solid var(--kerala-gold);
+}
+
+.lang-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--kerala-red);
+    border-radius: 8px;
+    background: var(--background-color);
+    color: var(--kerala-red);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lang-btn:hover {
+    background: var(--kerala-red);
+    color: var(--background-color);
+    transform: translateY(-2px);
+}
+
+.lang-btn.active {
+    background: var(--kerala-red);
+    color: white;
+    box-shadow: 0 0 10px rgba(205,38,38,0.3);
+}
+
+/* Game Container */
+.game-container {
+    background: var(--background-color);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+    margin-top: 180px;
+}
+
+.game-container::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, var(--kerala-gold), var(--kerala-red));
+    z-index: -1;
+    border-radius: 20px;
+}
+
+/* Mascots */
+.mascots {
+    position: absolute;
+    width: 100%;
+    top: -150px;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.mascot {
+    width: 180px;
+    height: 240px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mascot:hover {
+    transform: translateY(-10px);
+}
+
+.speech-bubble {
+    transition: opacity 0.3s ease;
+    transform-origin: center bottom;
+}
+
+.speech-text {
+    font-family: 'Comic Neue', cursive;
+}
+
+.speech-bubble.show {
+    opacity: 1;
+    animation: popIn 0.3s ease-out forwards;
+}
+
+.mascot-name {
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+}
+
+/* Game Title */
+.game-title {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    background: linear-gradient(120deg, var(--kerala-red), var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Game Board */
+.game-board {
+    background: linear-gradient(120deg, #FFF8DC, #FFFFF0);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin: 2rem 0;
+    border: 3px solid var(--kerala-gold);
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Stats Bar */
+.stats-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border: 2px solid var(--kerala-gold);
+}
+
+.timer {
+    color: var(--kerala-red);
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+
+/* Level Indicator */
+.level-indicator {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: linear-gradient(45deg, #FFF8DC, var(--kerala-gold));
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid var(--kerala-red);
+}
+
+.level-stars {
+    color: var(--kerala-red);
+    text-shadow: 1px 1px 2px var(--kerala-gold);
+    animation: pulse 2s infinite;
+}
+
+/* Question Container */
+.question {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin: 2rem 0;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    animation: popIn 0.5s ease-out;
+}
+
+.input-wrapper {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+input[type="number"] {
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    border: 3px solid var(--kerala-gold);
+    border-radius: var(--border-radius);
+    width: 250px;
+    text-align: center;
+    margin: 1rem 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    font-family: 'Comic Neue', cursive;
+    background: white;
+}
+
+input[type="number"]:focus {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,215,0,0.3);
+    outline: none;
+    border-color: var(--kerala-red);
+}
+
+input[type="number"].hidden {
+    display: none;
+}
+
+/* Score Display */
+.score-display {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border: 2px solid var(--kerala-gold);
+}
+
+/* Button */
+.primary-button {
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--kerala-red) 0%, #8B0000 100%);
+    color: white;
+    border: 2px solid var(--kerala-gold);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comic Neue', cursive;
+    margin: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.primary-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #8B0000 0%, var(--kerala-red) 100%);
+}
+
+.primary-button:active {
+    transform: translateY(1px);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Message System */
+.message {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: var(--border-radius);
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: linear-gradient(120deg, var(--kerala-red), #8B0000);
+    color: var(--kerala-gold);
+    border: 2px solid var(--kerala-gold);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.message.show {
+    opacity: 1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes slideIn {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Celebration Effects */
+.celebration {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.star {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite, fade 1s linear forwards;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Mascot Animations */
+.tapir-snout {
+    transform-origin: center;
+    animation: snoutWiggle 4s ease-in-out infinite;
+}
+
+.tapir-ear {
+    transform-origin: bottom;
+    animation: earFlick 5s ease-in-out infinite;
+}
+
+.capybara-ear {
+    transform-origin: center;
+    animation: twitch 3s ease-in-out infinite;
+}
+
+.capybara-eye {
+    animation: blink 4s ease-in-out infinite;
+}
+
+@keyframes snoutWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-5deg); }
+}
+
+@keyframes earFlick {
+    0%, 90%, 100% { transform: rotate(0deg); }
+    95% { transform: rotate(15deg); }
+}
+
+@keyframes twitch {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+}
+
+@keyframes blink {
+    0%, 95%, 100% { transform: scaleY(1); }
+    97.5% { transform: scaleY(0.1); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 2rem;
+        margin-top: 120px;
+    }
+
+    .mascot {
+        width: 150px;
+        height: 200px;
+    }
+
+    .question {
+        font-size: 2.5rem;
+    }
+
+    input[type="number"] {
+        width: 200px;
+    }
+
+    .stats-bar, .score-display {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .language-switcher {
+        top: auto;
+        bottom: 20px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 1rem;
+    }
+
+    .game-container {
+        padding: 1.5rem;
+        margin-top: 100px;
+    }
+
+    .mascot {
+        width: 120px;
+        height: 160px;
+    }
+
+    .question {
+        font-size: 2rem;
+    }
+
+    input[type="number"] {
+        width: 150px;
+        font-size: 1.5rem;
+    }
+
+    .primary-button {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .lang-btn {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+}
