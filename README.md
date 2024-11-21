@@ -53,36 +53,42 @@ A mathematics learning game built with Rust and WebAssembly, featuring Kerala's 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/neom-mathventure.git
 cd neom-mathventure
 ```
 
 2. Install dependencies:
+
 ```bash
 # Install wasm-pack
 curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 ```
 
 3. Build the WebAssembly module:
+
 ```bash
 wasm-pack build --target web
 ```
 
 4. Set up web directory:
+
 ```bash
 cd www
 ln -s ../pkg .  # Create symbolic link to pkg directory
 ```
 
 5. Start a local server:
+
 ```bash
 # Using Python 3
 python -m http.server 8080
 ```
 
 6. Open in browser:
-```
+
+```url
 http://localhost:8080
 ```
 
