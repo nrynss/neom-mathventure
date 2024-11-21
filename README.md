@@ -2,8 +2,6 @@
 
 A mathematics learning game built with Rust and WebAssembly, featuring Kerala's cultural elements and trilingual support (Malayalam, Manglish, and English).
 
-![Neom Mathventure Screenshot](screenshot.png)
-
 ## 🌟 Features
 
 ### Educational Elements
