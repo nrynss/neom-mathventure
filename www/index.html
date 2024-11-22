@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,110 +21,175 @@
     </div>
 
     <div class="game-container">
-        <div class="mascots">
-            <!-- Thangamma the Tapir -->
-            <svg class="mascot tapir" viewBox="0 0 300 400">
-                <!-- Speech bubble -->
-                <g class="speech-bubble" opacity="0">
-                    <path d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z" 
-                          fill="white" stroke="#21618C" stroke-width="3"/>
-                    <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3"/>
-                    <text x="150" y="90" text-anchor="middle" class="speech-text primary-text" fill="#21618C" font-size="24">നമസ്കാരം!</text>
-                    <text x="150" y="130" text-anchor="middle" class="speech-text secondary-text" fill="#21618C" font-size="20">പതുക്കെ പോയാലും പന്തയം ജയിക്കാം</text>
-                    <text x="150" y="170" text-anchor="middle" class="speech-text motivation-text" fill="#21618C" font-size="18">Let's solve this step by step!</text>
+        <!-- Thangamma the Tapir (Female) -->
+        <svg class="mascot tapir" viewBox="0 0 240 240">
+            <!-- Speech Bubble -->
+            <g class="speech-bubble" opacity="0">
+                <path d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z" 
+                      fill="white" stroke="#21618C" stroke-width="3"/>
+                <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3"/>
+                <text x="150" y="90" text-anchor="middle" class="speech-text primary-text" fill="#21618C" font-size="24">നമസ്കാരം!</text>
+                <text x="150" y="130" text-anchor="middle" class="speech-text secondary-text" fill="#21618C" font-size="20">നമുക്ക് കണക്ക് പഠിക്കാം</text>
+                <text x="150" y="170" text-anchor="middle" class="speech-text motivation-text" fill="#21618C" font-size="18">Let's solve together!</text>
+            </g>
+            
+            <!-- Head with feminine features -->
+            <g class="tapir-head">
+                <!-- Jasmine flowers in hair -->
+                <circle cx="105" cy="35" r="8" fill="white" class="jasmine"/>
+                <circle cx="107" cy="37" r="3" fill="#FFD700" class="jasmine-center"/>
+                <circle cx="155" cy="35" r="8" fill="white" class="jasmine"/>
+                <circle cx="157" cy="37" r="3" fill="#FFD700" class="jasmine-center"/>
+                
+                <!-- Long-styled hair -->
+                <path d="M100 40 
+                         C95 45 90 55 95 65
+                         C100 70 110 70 115 65" 
+                      fill="#4A4A4A" stroke="#363636" stroke-width="1"/>
+                
+                <!-- Main head shape -->
+                <path d="M110 50 
+                         C110 30 150 30 170 40
+                         C190 50 190 70 170 80
+                         C150 90 110 70 110 50Z" 
+                      fill="#E8E0D5" stroke="#4A4A4A" stroke-width="2"/>
+                
+                <!-- Face with feminine features -->
+                <g class="mascot-face">
+                    <!-- Longer eyelashes -->
+                    <path d="M135 42 L138 40" stroke="#2C1810" stroke-width="1"/>
+                    <path d="M140 41 L143 39" stroke="#2C1810" stroke-width="1"/>
+                    <path d="M145 42 L148 40" stroke="#2C1810" stroke-width="1"/>
+                    <path d="M155 42 L158 40" stroke="#2C1810" stroke-width="1"/>
+                    <path d="M160 41 L163 39" stroke="#2C1810" stroke-width="1"/>
+                    <path d="M165 42 L168 40" stroke="#2C1810" stroke-width="1"/>
+                    
+                    <!-- Slightly larger eyes -->
+                    <circle cx="140" cy="45" r="5" fill="#2C1810"/>
+                    <circle cx="160" cy="45" r="5" fill="#2C1810"/>
+                    <circle cx="142" cy="44" r="2" fill="white"/>
+                    <circle cx="162" cy="44" r="2" fill="white"/>
+                    
+                    <!-- Softer smile -->
+                    <path class="smile" d="M145 55 Q150 61 155 55" fill="none" stroke="#2C1810" stroke-width="2"/>
+                    <path class="grin" d="M140 55 Q150 65 160 55" fill="none" stroke="#2C1810" stroke-width="2" class="hidden"/>
+                    <path class="compassionate" d="M145 58 Q150 55 155 58" fill="none" stroke="#2C1810" stroke-width="2" class="hidden"/>
+                    <path class="very-happy" d="M140 55 Q150 70 160 55" fill="none" stroke="#2C1810" stroke-width="2" class="hidden"/>
                 </g>
+            </g>
 
-                <!-- Kerala-style border decoration -->
-                <defs>
-                    <pattern id="keralaPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <path d="M0,0 C5,5 15,5 20,0 C15,-5 5,-5 0,0" fill="none" stroke="#FFD700" stroke-width="1"/>
-                    </pattern>
-                </defs>
+            <!-- Body with traditional Kerala set mundu -->
+            <g class="tapir-body">
+                <!-- Torso with set mundu draping -->
+                <path d="M90 100 
+                         C90 80 110 70 130 70
+                         C150 70 170 80 170 100
+                         C170 140 150 160 130 160
+                         C110 160 90 140 90 100Z" 
+                      fill="#E8E0D5" stroke="#4A4A4A" stroke-width="2"/>
                 
-                <!-- Main body -->
-                <ellipse cx="150" cy="270" rx="90" ry="60" fill="#4A4A4A"/>
+                <!-- Set mundu pleats -->
+                <path d="M90 130 L170 130" stroke="#FFD700" stroke-width="4"/>
+                <path d="M90 135 L170 135" stroke="#FFD700" stroke-width="2"/>
                 
-                <!-- Kasavu mundu-style decoration -->
-                <rect x="60" y="260" width="180" height="8" fill="#FFD700"/>
+                <!-- Arms with bangles -->
+                <path d="M85 100 C75 110 70 120 75 140" 
+                      fill="none" stroke="#E8E0D5" stroke-width="12" stroke-linecap="round"/>
+                <circle cx="75" cy="115" r="7" fill="none" stroke="#FFD700" stroke-width="2" class="bangle"/>
+                <circle cx="75" cy="125" r="7" fill="none" stroke="#FFD700" stroke-width="2" class="bangle"/>
                 
-                <!-- Legs -->
-                <rect x="90" y="310" width="25" ry="8" height="45" fill="#363636" class="tapir-leg"/>
-                <rect x="185" y="310" width="25" ry="8" height="45" fill="#363636" class="tapir-leg"/>
+                <path d="M175 100 C185 110 190 120 185 140" 
+                      fill="none" stroke="#E8E0D5" stroke-width="12" stroke-linecap="round"/>
+                <circle cx="185" cy="115" r="7" fill="none" stroke="#FFD700" stroke-width="2" class="bangle"/>
+                <circle cx="185" cy="125" r="7" fill="none" stroke="#FFD700" stroke-width="2" class="bangle"/>
                 
-                <!-- Main body highlight -->
-                <ellipse cx="150" cy="260" rx="85" ry="55" fill="#5A5A5A"/>
-                
-                <!-- Head -->
-                <path d="M210 240 Q240 245 255 230 Q265 215 240 205 Q225 200 210 210" 
-                      fill="#4A4A4A" class="tapir-snout"/>
-                
-                <!-- Nose -->
-                <ellipse cx="245" cy="220" rx="15" ry="9" fill="#363636"/>
-                
-                <!-- Eyes -->
-                <circle cx="215" cy="200" r="8" fill="black"/>
-                <circle cx="217" cy="198" r="3" fill="white"/>
-                
-                <!-- Ears with jasmine flower -->
-                <ellipse cx="190" cy="180" rx="12" ry="15" fill="#363636" class="tapir-ear"/>
-                <circle cx="183" cy="173" r="8" fill="white" class="jasmine"/>
-                <circle cx="185" cy="175" r="3" fill="#FFD700" class="jasmine-center"/>
-                
-                <!-- Name -->
-                <text x="150" y="380" text-anchor="middle" fill="#21618C" font-family="Comic Neue" font-size="32" font-weight="bold" class="mascot-name">തങ്കമ്മ</text>
-            </svg>
-
-            <!-- Kannappan the Capybara -->
-            <svg class="mascot capybara" viewBox="0 0 300 400">
-                <!-- Speech bubble -->
-                <g class="speech-bubble" opacity="0">
-                    <path d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z" 
-                          fill="white" stroke="#21618C" stroke-width="3"/>
-                    <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3"/>
-                    <text x="150" y="90" text-anchor="middle" class="speech-text primary-text" fill="#21618C" font-size="24">അടിപൊളി!</text>
-                    <text x="150" y="130" text-anchor="middle" class="speech-text secondary-text" fill="#21618C" font-size="20">നിങ്ങൾക്ക് പറ്റും!</text>
-                    <text x="150" y="170" text-anchor="middle" class="speech-text motivation-text" fill="#21618C" font-size="18">You're doing great!</text>
-                </g>
-                
-                <!-- Body -->
-                <ellipse cx="150" cy="280" rx="75" ry="60" fill="#8B4513"/>
-                
-                <!-- Kasavu mundu decoration -->
-                <rect x="75" y="270" width="150" height="8" fill="#FFD700"/>
-                
-                <!-- Legs -->
-                <rect x="95" y="320" width="25" ry="8" height="30" fill="#6B3410" class="capybara-leg"/>
-                <rect x="180" y="320" width="25" ry="8" height="30" fill="#6B3410" class="capybara-leg"/>
-                
-                <!-- Head with tilak -->
-                <circle cx="150" cy="230" r="53" fill="#8B4513"/>
-                <path d="M147 190 L153 190 L150 205 Z" fill="#FF0000" class="tilak"/>
-                
-                <!-- Traditional mustache -->
-                <path d="M125 245 Q150 260 175 245" stroke="#2C1810" stroke-width="3" fill="none"/>
-                
-                <!-- Eyes -->
-                <circle cx="127" cy="215" r="9" fill="#2C1810"/>
-                <circle cx="172" cy="215" r="9" fill="#2C1810"/>
-                <circle cx="129" cy="213" r="3" fill="white" class="capybara-eye"/>
-                <circle cx="174" cy="213" r="3" fill="white" class="capybara-eye"/>
+                <!-- Legs with pleated bottom -->
+                <path d="M110 160 C110 180 110 190 115 210" 
+                      fill="none" stroke="#E8E0D5" stroke-width="15" stroke-linecap="round"/>
+                <path d="M150 160 C150 180 150 190 145 210" 
+                      fill="none" stroke="#E8E0D5" stroke-width="15" stroke-linecap="round"/>
+            </g>
+        </svg>
+        <!-- Kannappan the Capybara (Male) -->
+        <svg class="mascot capybara" viewBox="0 0 240 240">
+            <!-- Speech Bubble -->
+            <g class="speech-bubble" opacity="0">
+                <path d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z" 
+                    fill="white" stroke="#21618C" stroke-width="3"/>
+                <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3"/>
+                <text x="150" y="90" text-anchor="middle" class="speech-text primary-text" fill="#21618C" font-size="24">കൊള്ളാം!</text>
+                <text x="150" y="130" text-anchor="middle" class="speech-text secondary-text" fill="#21618C" font-size="20">നന്നായി ചെയ്തു</text>
+                <text x="150" y="170" text-anchor="middle" class="speech-text motivation-text" fill="#21618C" font-size="18">Great job!</text>
+            </g>
+            
+            <!-- Head with masculine features -->
+            <g class="capybara-head">
+                <!-- Main head shape with stronger jaw -->
+                <path d="M100 60
+                        C100 30 160 30 160 60
+                        C160 90 100 90 100 60Z" 
+                    fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
                 
                 <!-- Ears -->
-                <circle cx="112" cy="190" r="12" fill="#6B3410" class="capybara-ear"/>
-                <circle cx="187" cy="190" r="12" fill="#6B3410" class="capybara-ear"/>
+                <circle cx="105" cy="45" r="12" fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
+                <circle cx="155" cy="45" r="12" fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
                 
-                <!-- Name -->
-                <text x="150" y="380" text-anchor="middle" fill="#21618C" font-family="Comic Neue" font-size="32" font-weight="bold" class="mascot-name">കണ്ണപ്പൻ</text>
-            </svg>
-        </div>
+                <!-- Face with masculine features -->
+                <g class="mascot-face">
+                    <!-- Thicker eyebrows -->
+                    <path d="M115 48 L125 48" stroke="#2C1810" stroke-width="3"/>
+                    <path d="M135 48 L145 48" stroke="#2C1810" stroke-width="3"/>
+                    
+                    <!-- Eyes -->
+                    <circle cx="120" cy="55" r="4" fill="#2C1810"/>
+                    <circle cx="140" cy="55" r="4" fill="#2C1810"/>
+                    <circle cx="122" cy="54" r="1.5" fill="white"/>
+                    <circle cx="142" cy="54" r="1.5" fill="white"/>
+                    
+                    <!-- Small mustache -->
+                    <path d="M125 62 Q130 64 135 62" stroke="#2C1810" stroke-width="1"/>
+                    
+                    <!-- Expressions -->
+                    <path class="smile" d="M125 67 Q130 72 135 67" fill="none" stroke="#2C1810" stroke-width="2.5"/>
+                    <path class="grin" d="M120 67 Q130 77 140 67" fill="none" stroke="#2C1810" stroke-width="2.5" class="hidden"/>
+                    <path class="compassionate" d="M125 70 Q130 67 135 70" fill="none" stroke="#2C1810" stroke-width="2.5" class="hidden"/>
+                    <path class="very-happy" d="M120 67 Q130 82 140 67" fill="none" stroke="#2C1810" stroke-width="2.5" class="hidden"/>
+                </g>
+            </g>
 
-        <h1 class="game-title">Welcome to Neom Mathventure!</h1>
+            <!-- Body with traditional Kerala mundu -->
+            <g class="capybara-body">
+                <!-- Torso with broader shoulders -->
+                <path d="M85 100 
+                        C85 80 110 70 130 70
+                        C150 70 175 80 175 100
+                        C175 140 150 160 130 160
+                        C110 160 85 140 85 100Z" 
+                    fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
+                
+                <!-- Mundu with single gold border -->
+                <path d="M85 130 L175 130" stroke="#FFD700" stroke-width="4"/>
+                
+                <!-- Stronger arms -->
+                <path d="M80 100 C70 110 65 120 70 140" 
+                    fill="none" stroke="#8B4513" stroke-width="14" stroke-linecap="round"/>
+                <path d="M180 100 C190 110 195 120 190 140" 
+                    fill="none" stroke="#8B4513" stroke-width="14" stroke-linecap="round"/>
+                
+                <!-- Legs -->
+                <path d="M110 160 C110 180 110 190 115 210" 
+                    fill="none" stroke="#8B4513" stroke-width="15" stroke-linecap="round"/>
+                <path d="M150 160 C150 180 150 190 145 210" 
+                    fill="none" stroke="#8B4513" stroke-width="15" stroke-linecap="round"/>
+            </g>
+        </svg>
 
-        <div class="game-content">
-            <div class="stats-bar">
-                <div class="timer">⏳ Time: <span id="time">30</span>s</div>
-                <div class="high-score">🏆 Best Score: <span id="highScore">0</span></div>
-            </div>
+        <!-- Game Content -->
+        <main class="game-content">
+            <header class="stats-bar">
+                <div class="timer">⏳ <span id="time">30</span>s</div>
+                <div class="high-score">🏆 <span id="highScore">0</span></div>
+            </header>
 
             <div class="game-board">
                 <div class="level-indicator">
@@ -145,12 +210,12 @@
                     <div class="accuracy">Correct: <span id="accuracy">0</span>% ✨</div>
                 </div>
             </div>
-        </div>
+        </main>
 
         <div id="message" class="message"></div>
-        <div class="celebration" id="celebration"></div>
+        <div id="celebration" class="celebration"></div>
     </div>
 
     <script type="module" src="js/index.js"></script>
-</body>
+    </body>
 </html>
