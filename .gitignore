@@ -31,6 +31,7 @@ yarn-error.log
 *.pid.lock
 
 # Operating System files
+/.DS_Store
 .DS_Store
 .DS_Store?
 ._*
@@ -68,3 +69,4 @@ coverage/
 
 # Symbolic links in www directory
 www/pkg
+.DS_Store

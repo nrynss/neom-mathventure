@@ -150,7 +150,15 @@
         <div id="message" class="message"></div>
         <div class="celebration" id="celebration"></div>
     </div>
-
+    <script>
+        // Auto-detect if we're on the Hugo site
+        window.NEOM_BASE_PATH = window.location.pathname.includes('/neom-mathventure') 
+                              ? '/neom-mathventure' 
+                              : '';
+        
+        // For debugging
+        console.log("Using base path:", window.NEOM_BASE_PATH);
+    </script>
     <script type="module" src="js/index.js"></script>
 </body>
 </html>

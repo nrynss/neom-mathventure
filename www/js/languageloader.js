@@ -1,3 +1,6 @@
+// Add configurable base path
+const BASE_PATH = window.NEOM_BASE_PATH || '';
+
 class LanguageLoader {
     constructor() {
         this.currentLanguage = 'malayalam';
@@ -6,7 +9,8 @@ class LanguageLoader {
 
     async loadLanguage(language) {
         try {
-            const response = await fetch(`/locales/${language}.json`);
+            // Updated path to use BASE_PATH
+            const response = await fetch(`${BASE_PATH}/www/locales/${language}.json`);
             if (!response.ok) throw new Error(`Failed to load ${language}`);
             this.translations[language] = await response.json();
             return this.translations[language];
@@ -25,7 +29,7 @@ class LanguageLoader {
     }
 
     getText(path) {
-        return path.split('.').reduce((obj, key) => obj && obj[key], this.translations[this.currentLanguage]) || '';
+        return path.split('.').reduce((obj, key) => obj?.[key], this.translations[this.currentLanguage]) || '';
     }
 
     getRandomPhrase(category) {
