@@ -1,4 +1,6 @@
-import init, { NeomMathGame } from '../../pkg/neom_mathventure.js';
+// Add configurable base path
+const BASE_PATH = window.NEOM_BASE_PATH || '';
+import init, { NeomMathGame } from `${BASE_PATH}/pkg/neom_mathventure.js`;
 import LanguageLoader from './languageloader.js';
 
 class GameUI {
