@@ -1,6 +1,6 @@
-use wasm_bindgen::prelude::*;
 use rand::Rng;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::*;
 use web_sys::console;
 
 #[derive(Serialize, Deserialize)]
@@ -21,6 +21,7 @@ pub struct NeomMathGame {
     consecutive_correct: i32,
     total_questions: i32,
     correct_answers: i32,
+    rng: rand::rngs::ThreadRng, // Store RNG for reuse
 }
 
 #[wasm_bindgen]
@@ -35,32 +36,47 @@ impl NeomMathGame {
             consecutive_correct: 0,
             total_questions: 0,
             correct_answers: 0,
+            rng: rand::thread_rng(), // Initialize once
         }
     }
 
     pub fn generate_question(&mut self) -> String {
-        let mut rng = rand::thread_rng();
         let operations = match self.difficulty_level {
             1 => vec!['+'],
             2 => vec!['+', '-'],
-            _ => vec!['+', '-', '*'],
+            3 => vec!['+', '-', '*'],
+            _ => vec!['+', '-', '*', '/'], // Added division for higher levels
         };
-        
-        let operation = operations[rng.gen_range(0..operations.len())];
-        
+
+        let operation = operations[self.rng.gen_range(0..operations.len())];
+
         // Adjust number range based on difficulty
         let range = 5 * self.difficulty_level;
-        let first = rng.gen_range(1..=range);
-        let second = match operation {
-            '-' => rng.gen_range(1..=first), // Ensure positive results
-            '*' => rng.gen_range(1..=range/2), // Keep multiplications manageable
-            _ => rng.gen_range(1..=range),
-        };
-        
-        let correct_answer = match operation {
-            '+' => first + second,
-            '-' => first - second,
-            '*' => first * second,
+
+        // Generate numbers based on operation
+        let (first, second, correct_answer) = match operation {
+            '+' => {
+                let first = self.rng.gen_range(1..=range);
+                let second = self.rng.gen_range(1..=range);
+                (first, second, first + second)
+            }
+            '-' => {
+                let first = self.rng.gen_range(1..=range);
+                let second = self.rng.gen_range(1..=first); // Ensure positive results
+                (first, second, first - second)
+            }
+            '*' => {
+                let first = self.rng.gen_range(1..=range);
+                let second = self.rng.gen_range(1..=range / 2); // Keep multiplications manageable
+                (first, second, first * second)
+            }
+            '/' => {
+                // Generate division with whole number result
+                let second = self.rng.gen_range(1..=(range / 2).max(1));
+                let correct_answer = self.rng.gen_range(1..=(range / second).max(1));
+                let first = correct_answer * second;
+                (first, second, correct_answer)
+            }
             _ => unreachable!(),
         };
 
@@ -74,26 +90,26 @@ impl NeomMathGame {
 
         self.current_question = Some(question);
         self.total_questions += 1;
-        
+
         format!("{} {} {}", first, operation, second)
     }
 
     pub fn check_answer(&mut self, user_answer: i32) -> bool {
         if let Some(question) = &self.current_question {
             let correct = user_answer == question.correct_answer;
-            
+
             if correct {
                 self.current_score += self.difficulty_level * 10;
                 self.consecutive_correct += 1;
                 self.correct_answers += 1;
-                
+
                 // Increase difficulty every 5 consecutive correct answers
                 if self.consecutive_correct >= 5 {
                     self.difficulty_level += 1;
                     self.consecutive_correct = 0;
                     console::log_1(&"Level Up!".into());
                 }
-                
+
                 // Update high score
                 if self.current_score > self.high_score {
                     self.high_score = self.current_score;
@@ -101,9 +117,10 @@ impl NeomMathGame {
             } else {
                 self.consecutive_correct = 0;
             }
-            
+
             correct
         } else {
+            console::log_1(&"Error: Attempting to check answer without active question".into());
             false
         }
     }
@@ -116,6 +133,12 @@ impl NeomMathGame {
         self.high_score
     }
 
+    #[wasm_bindgen]
+    pub fn set_high_score(&mut self, score: i32) {
+        // For loading saved high scores
+        self.high_score = score;
+    }
+
     pub fn get_difficulty(&self) -> i32 {
         self.difficulty_level
     }
@@ -126,6 +149,10 @@ impl NeomMathGame {
         } else {
             (self.correct_answers as f64 / self.total_questions as f64 * 100.0).round()
         }
+    }
+
+    pub fn get_correct_answer(&self) -> Option<i32> {
+        self.current_question.as_ref().map(|q| q.correct_answer)
     }
 
     pub fn reset_game(&mut self) {
