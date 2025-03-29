@@ -1,49 +1,72 @@
 {
-    "ui": {
-        "title": "Neom Mathventure",
-        "timer": "Samayam",
-        "highScore": "Uyarnna Score",
-        "level": "Level",
-        "score": "Score",
-        "accuracy": "Kruthyatha",
-        "buttons": {
-            "start": "Thudangam! 🚀",
-            "check": "Utharam check cheyyu! 🎯",
-            "playAgain": "Veendum kalikkam! 🔄"
-        },
-        "gameOver": "Kali kazhinju!"
+  "ui": {
+    "title": "Neom Mathventure",
+    "timer": "Samayam",
+    "highScore": "Uyarnna Score",
+    "level": "Level",
+    "score": "Score",
+    "accuracy": "Kruthyatha",
+    "buttons": {
+      "start": "Thudangam! 🚀",
+      "check": "Utharam check cheyyu! 🎯",
+      "playAgain": "Veendum kalikkam! 🔄"
     },
-    "mascots": {
-        "thangamma": {
-            "name": "Thangamma",
-            "greetings": [
-                ["Namaskaram!", "Ganitham padikkam", "Namukku thudangam"],
-                ["Swagatha!", "Thayyarano?", "Padikkan thayyarano?"],
-                ["Hai!", "Kalikkan thayyarano?", "Namukku padikkam"]
-            ],
-            "encouragement": [
-                ["Kollam!", "Valare nanayirikunnu", "Thudaru!"],
-                ["Adipoli!", "Nannayi cheythu", "Munnott!"],
-                ["Kidukkachi!", "Mikacha prakadam", "Nallathu pole!"]
-            ]
-        },
-        "kannappan": {
-            "name": "Kannappan",
-            "motivation": [
-                ["Sremikku!", "Namukku pattum", "Vijayikkum!"],
-                ["Onnu koodi!", "Athu sariyakum", "Ningalkku kazhiyum!"],
-                ["Kuzhappamilla!", "Veendum sremikkam", "Adutha thavana!"]
-            ],
-            "celebrations": [
-                ["Jayichu!", "Super", "Vijayam!"],
-                ["Kidukkachi!", "Nannayi", "Adipoli!"],
-                ["Polichu!", "Mikachathu", "Kidu!"]
-            ]
-        }
+    "gameOver": "Kali kazhinju!"
+  },
+  "mascots": {
+    "thangamma": {
+      "name": "Thangamma",
+      "greetings": [
+        ["Namaskaram!", "Ganitham padikkam", "Namukku thudangam"],
+        ["Swagatha!", "Thayyarano?", "Padikkan thayyarano?"],
+        ["Hai!", "Kalikkan thayyarano?", "Namukku padikkam"]
+      ],
+      "encouragement": [
+        ["Kollam!", "Valare nanayirikunnu", "Thudaru!"],
+        ["Adipoli!", "Nannayi cheythu", "Munnott!"],
+        ["Kidukkachi!", "Mikacha prakadam", "Nallathu pole!"]
+      ],
+      "celebrations": [
+        [
+          "Puthiya level!",
+          "Ningal mikachathaakunnu!",
+          "Athbhuthakarmaya purogati!"
+        ],
+        [
+          "Puthiya level!",
+          "Ningal oru nakshathramaanu!",
+          "Mikacha pravarthanam!"
+        ],
+        [
+          "Munnott pokunn!",
+          "Avishwasaneeyamaya padanam!",
+          "Ningal ithu master cheyyunnu!"
+        ]
+      ]
     },
-    "feedback": {
-        "correct": ["Valare nannu!", "Thetilla!", "Kollam!"],
-        "levelUp": ["Adutha level!", "Uyarangalilekk!", "Munnott!"],
-        "gameStats": "Score: {} | Kruthyatha: {}%"
+    "kannappan": {
+      "name": "Kannappan",
+      "motivation": [
+        ["Sremikku!", "Namukku pattum", "Vijayikkum!"],
+        ["Onnu koodi!", "Athu sariyakum", "Ningalkku kazhiyum!"],
+        ["Kuzhappamilla!", "Veendum sremikkam", "Adutha thavana!"]
+      ],
+      "celebrations": [
+        ["Jayichu!", "Super", "Vijayam!"],
+        ["Kidukkachi!", "Nannayi", "Adipoli!"],
+        ["Polichu!", "Mikachathu", "Kidu!"]
+      ]
     }
+  },
+  "feedback": {
+    "correct": ["Valare nannu!", "Thetilla!", "Kollam!"],
+    "incorrect": [
+      "Athra shariyalla",
+      "Veendum sremikku",
+      "Aduthundu, pakshe shariyalla"
+    ],
+    "enterNumber": "Dayavayi oru sankhya nalku",
+    "levelUp": ["Adutha level!", "Uyarangalilekk!", "Munnott!"],
+    "gameStats": "Score: {} | Kruthyatha: {}%"
+  }
 }
