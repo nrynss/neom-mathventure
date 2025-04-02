@@ -6,9 +6,18 @@
     "level": "Level",
     "score": "Score",
     "accuracy": "Kruthyatha",
+    "defaultPlayerName": "Kalikkaran",
+    "namePlaceholder": "Ningalude peru ivide ezhuthu",
+    "welcomeMessage": "Ganitha sahasikathayude lokathilekku swagatham!",
+    "welcomeIntro": "Thangammayum Kannappanum oru aveshakaramaya yathrayil cheruka.",
+    "enterName": "Ningalude peru nalkuka:",
+    "getReady": "Thayyarakku!",
+    "finalScore": "Avasana Score",
+    "finalAccuracy": "Avasana Kruthyatha",
+    "correctAnswerWas": "Shariyaya utharam",
     "buttons": {
       "start": "Thudangam! 🚀",
-      "check": "Utharam check cheyyu! 🎯",
+      "check": "Utharam parisidhikku! 🎯",
       "playAgain": "Veendum kalikkam! 🔄"
     },
     "gameOver": "Kali kazhinju!"

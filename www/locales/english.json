@@ -6,6 +6,15 @@
     "level": "Level",
     "score": "Score",
     "accuracy": "Accuracy",
+    "defaultPlayerName": "Player",
+    "namePlaceholder": "Enter your name here",
+    "welcomeMessage": "Welcome to the world of math adventures!",
+    "welcomeIntro": "Join Thangamma the Tapir and Kannappan the Capybara on an exciting journey.",
+    "enterName": "Enter Your Name:",
+    "getReady": "Get Ready!",
+    "finalScore": "Final Score",
+    "finalAccuracy": "Final Accuracy",
+    "correctAnswerWas": "The correct answer was",
     "buttons": {
       "start": "Let's Begin! 🚀",
       "check": "Check Answer! 🎯",
@@ -50,6 +59,7 @@
     "correct": ["Very good!", "Perfect!", "Excellent!"],
     "incorrect": ["Not quite right", "Try again", "Close, but not correct"],
     "enterNumber": "Please enter a number",
+    "correctAnswerWas": "The correct answer was",
     "levelUp": ["Next level!", "Moving up!", "Onwards!"],
     "gameStats": "Score: {} | Accuracy: {}%"
   }

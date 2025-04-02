@@ -357,19 +357,73 @@
                 </svg>
             </div>
 
-            <h1 class="game-title">Welcome to Neom Mathventure!</h1>
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen">
+                <h1 class="game-title">നിയോം മാത്ത്വെഞ്ചർ</h1>
+                <div class="welcome-content">
+                    <div class="intro-text">
+                        <p>Welcome to the world of math adventures!</p>
+                        <p>
+                            Join Thangamma the Tapir and Kannappan the Capybara
+                            on an exciting journey.
+                        </p>
+                    </div>
 
-            <div class="game-content">
+                    <form class="player-form">
+                        <div class="form-group">
+                            <label for="player-name">Enter Your Name:</label>
+                            <input
+                                type="text"
+                                id="player-name"
+                                placeholder="Your name here"
+                                autocomplete="off"
+                            />
+                        </div>
+
+                        <button
+                            type="button"
+                            id="start-game-button"
+                            class="primary-button"
+                        >
+                            Let's Begin! 🚀
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Countdown Screen -->
+            <div id="countdown-screen" class="screen">
+                <div class="countdown-container">
+                    <h2>Get Ready!</h2>
+                    <div class="countdown-number" id="countdown-number">3</div>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="screen">
+                <h1 class="game-title">നിയോം മാത്ത്വെഞ്ചർ</h1>
+
+                <div class="player-info">
+                    <span class="player-name" id="player-name-display"
+                        >Player</span
+                    >
+                </div>
+
                 <div class="stats-bar">
-                    <div class="timer">⏳ Time: <span id="time">30</span>s</div>
+                    <div class="timer">
+                        <span class="timer-label">⏳ Time:</span>
+                        <span id="time">30</span>s
+                    </div>
                     <div class="high-score">
-                        🏆 Best Score: <span id="highScore">0</span>
+                        <span class="high-score-label">🏆 Best Score:</span>
+                        <span id="highScore">0</span>
                     </div>
                 </div>
 
                 <div class="game-board">
                     <div class="level-indicator">
-                        Level <span id="level">1</span>
+                        <span class="level-label">Level</span>
+                        <span id="level">1</span>
                         <div class="level-stars">⭐</div>
                     </div>
 
@@ -382,25 +436,57 @@
                                 type="number"
                                 id="answer"
                                 placeholder="Type your answer here!"
-                                class="hidden"
                                 aria-label="Your answer"
                                 aria-describedby="question"
                             />
-                            <button id="actionButton" class="primary-button">
-                                Let's Begin! 🚀
+                            <button
+                                id="check-answer-button"
+                                class="primary-button"
+                            >
+                                Check Answer! 🎯
                             </button>
                         </div>
                     </div>
 
                     <div class="score-display">
                         <div class="current-score">
-                            Score: <span id="score">0</span> 🌟
+                            <span class="score-label">Score:</span>
+                            <span id="score">0</span> 🌟
                         </div>
                         <div class="accuracy">
-                            Correct: <span id="accuracy">0</span>% ✨
+                            <span class="accuracy-label">Correct:</span>
+                            <span id="accuracy">0</span>% ✨
                         </div>
                     </div>
                 </div>
+
+                <div id="message" class="message" aria-live="assertive"></div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="screen">
+                <h2>Game Over!</h2>
+
+                <div class="game-over-stats">
+                    <div class="final-score">
+                        <span class="final-score-label">Final Score:</span>
+                        <span id="final-score">0</span> 🌟
+                    </div>
+                    <div class="final-accuracy">
+                        <span class="final-accuracy-label">Accuracy:</span>
+                        <span id="final-accuracy">0</span>% ✨
+                    </div>
+                </div>
+
+                <div
+                    class="celebration"
+                    id="celebration"
+                    aria-hidden="true"
+                ></div>
+
+                <button id="play-again-button" class="primary-button">
+                    Play Again! 🔄
+                </button>
             </div>
 
             <div id="message" class="message" aria-live="assertive"></div>
@@ -413,7 +499,13 @@
             )
                 ? "/neom-mathventure"
                 : "";
-
+        <script>
+            // Auto-detect if we're on the Hugo site
+            window.NEOM_BASE_PATH = window.location.pathname.includes(
+                "/neom-mathventure",
+            )
+                ? "/neom-mathventure"
+                : "";
             // For debugging
             console.log("Using base path:", window.NEOM_BASE_PATH);
         </script>
