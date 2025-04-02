@@ -488,8 +488,10 @@
                     Play Again! 🔄
                 </button>
             </div>
-        </div>
 
+            <div id="message" class="message" aria-live="assertive"></div>
+            <div class="celebration" id="celebration" aria-hidden="true"></div>
+        </div>
         <script>
             // Auto-detect if we're on the Hugo site
             window.NEOM_BASE_PATH = window.location.pathname.includes(
@@ -497,7 +499,13 @@
             )
                 ? "/neom-mathventure"
                 : "";
-
+        <script>
+            // Auto-detect if we're on the Hugo site
+            window.NEOM_BASE_PATH = window.location.pathname.includes(
+                "/neom-mathventure",
+            )
+                ? "/neom-mathventure"
+                : "";
             // For debugging
             console.log("Using base path:", window.NEOM_BASE_PATH);
         </script>

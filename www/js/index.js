@@ -1,5 +1,3 @@
-// index.js
-
 // Add configurable base path - Ensure this is set correctly in index.html
 const BASE_PATH = window.NEOM_BASE_PATH || "";
 
