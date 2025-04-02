@@ -1,43 +1,88 @@
-// Add configurable base path
-const BASE_PATH = window.NEOM_BASE_PATH || "";
-
 class LanguageLoader {
   constructor() {
     this.currentLanguage = "malayalam";
     this.translations = {};
     this.defaultTranslations = {
       ui: {
-        title: "Math Game",
+        title: "Neom Mathventure",
+        timer: "Time",
+        highScore: "High Score",
+        level: "Level",
+        score: "Score",
+        accuracy: "Accuracy",
         buttons: {
-          start: "Start",
-          check: "Check",
-          playAgain: "Play Again",
+          start: "Let's Begin! 🚀",
+          check: "Check Answer! 🎯",
+          playAgain: "Play Again! 🔄",
         },
-        gameOver: "Game Over",
+        gameOver: "Game Over!",
+      },
+      mascots: {
+        thangamma: {
+          name: "Thangamma",
+          greetings: [["Hello!", "Let's learn math", "Shall we begin?"]],
+          encouragement: [["Great!", "Very good", "Keep going!"]],
+          celebrations: [
+            ["Level up!", "You're getting better!", "Amazing progress!"],
+          ],
+        },
+        kannappan: {
+          name: "Kannappan",
+          motivation: [["Try!", "We can do it", "Success awaits!"]],
+          celebrations: [["Victory!", "Super", "Success!"]],
+        },
       },
       feedback: {
+        correct: ["Very good!", "Perfect!", "Excellent!"],
+        incorrect: ["Not quite right", "Try again", "Close, but not correct"],
         enterNumber: "Please enter a number",
+        correctAnswerWas: "The correct answer was",
+        levelUp: ["Next level!", "Moving up!", "Onwards!"],
       },
     };
   }
 
   async loadLanguage(language) {
     try {
-      // Updated path to use BASE_PATH and remove /www/ prefix
-      const response = await fetch(`${BASE_PATH}/locales/${language}.json`);
-      if (!response.ok) throw new Error(`Failed to load ${language}`);
+      // Try different path approaches to find the language file
+      const paths = [
+        `./locales/${language}.json`,
+        `../locales/${language}.json`,
+        `/www/locales/${language}.json`,
+        `/locales/${language}.json`,
+      ];
+
+      let response = null;
+      let loadedPath = "";
+
+      // Try each path until one works
+      for (const path of paths) {
+        try {
+          console.log(`Attempting to load language from: ${path}`);
+          response = await fetch(path);
+          if (response.ok) {
+            loadedPath = path;
+            break;
+          }
+        } catch (err) {
+          console.log(`Failed loading from ${path}: ${err.message}`);
+        }
+      }
+
+      if (!response || !response.ok) {
+        console.warn(`Could not load ${language}, using default translations`);
+        this.translations[language] = this.defaultTranslations;
+        return this.defaultTranslations;
+      }
+
+      console.log(
+        `Successfully loaded language ${language} from ${loadedPath}`,
+      );
       this.translations[language] = await response.json();
       return this.translations[language];
     } catch (error) {
       console.error(`Error loading language: ${language}`, error);
-
-      // Fallback to English if available
-      if (language !== "english" && this.translations["english"]) {
-        console.log("Falling back to English language");
-        return this.translations["english"];
-      }
-
-      // Use default translations as last resort
+      this.translations[language] = this.defaultTranslations;
       return this.defaultTranslations;
     }
   }
@@ -51,27 +96,38 @@ class LanguageLoader {
   }
 
   getText(path) {
+    if (!this.translations[this.currentLanguage]) {
+      return this.getFromDefault(path);
+    }
+
     const result = path
       .split(".")
       .reduce(
-        (obj, key) => obj?.[key],
+        (obj, key) => (obj && obj[key] !== undefined ? obj[key] : undefined),
         this.translations[this.currentLanguage],
       );
-    if (result === undefined) {
-      // Try to get from default translations if not found
-      const defaultValue = path
-        .split(".")
-        .reduce((obj, key) => obj?.[key], this.defaultTranslations);
-      return defaultValue || "";
+
+    if (result !== undefined) {
+      return result;
     }
-    return result;
+
+    return this.getFromDefault(path);
+  }
+
+  getFromDefault(path) {
+    return path
+      .split(".")
+      .reduce(
+        (obj, key) => (obj && obj[key] !== undefined ? obj[key] : ""),
+        this.defaultTranslations,
+      );
   }
 
   getRandomPhrase(category) {
     const phrases = this.getText(category);
-    if (!phrases || !phrases.length) {
-      console.warn(`No phrases found for category: ${category}`);
-      return null;
+    if (!phrases || !Array.isArray(phrases) || phrases.length === 0) {
+      console.warn(`No valid phrases found for category: ${category}`);
+      return ["", "", ""];
     }
     return phrases[Math.floor(Math.random() * phrases.length)];
   }
@@ -85,7 +141,9 @@ class LanguageLoader {
       return this.translations[language];
     } catch (error) {
       console.error(`Failed to change language to ${language}:`, error);
-      return this.translations[this.currentLanguage]; // Return current language on error
+      return (
+        this.translations[this.currentLanguage] || this.defaultTranslations
+      );
     }
   }
 }
