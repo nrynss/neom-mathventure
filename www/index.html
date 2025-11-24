@@ -21,13 +21,10 @@
         <button id="music-toggle" class="lang-btn" aria-label="Toggle Music">🎵</button>
     </div>
 
-    <!-- Main Game Container -->
-    <div class="game-container" role="application" aria-label="Math Adventure Game">
-
+    <div class="game-container">
         <div class="game-card">
-            <!-- Mascots Container -->
             <div class="mascots-container">
-                <!-- Thangamma (Tapir) -->
+                <!-- Thangamma (Tapir) - BIPEDAL CUTE VERSION -->
                 <div class="mascot-wrapper tapir-wrapper">
                     <svg class="mascot tapir" viewBox="0 0 300 400" aria-label="Thangamma the Tapir">
                         <!-- Speech Bubble -->
@@ -39,17 +36,48 @@
                             <text x="150" y="120" text-anchor="middle" class="speech-text primary-text" fill="#21618C"
                                 font-size="24">Hello!</text>
                         </g>
-                        <!-- Body -->
-                        <ellipse cx="150" cy="270" rx="90" ry="60" fill="#4A4A4A" />
-                        <rect x="60" y="260" width="180" height="8" fill="#FFD700" /> <!-- Kasavu -->
-                        <rect x="90" y="310" width="25" ry="8" height="45" fill="#363636" />
-                        <rect x="185" y="310" width="25" ry="8" height="45" fill="#363636" />
-                        <ellipse cx="150" cy="260" rx="85" ry="55" fill="#5A5A5A" />
-                        <path d="M210 240 Q240 245 255 230 Q265 215 240 205 Q225 200 210 210" fill="#4A4A4A" />
-                        <ellipse cx="245" cy="220" rx="15" ry="9" fill="#363636" />
-                        <circle cx="215" cy="200" r="8" fill="black" />
-                        <circle cx="217" cy="198" r="3" fill="white" />
-                        <text x="150" y="380" text-anchor="middle" fill="#21618C" font-family="Comic Neue"
+
+                        <!-- Legs (Back) -->
+                        <rect x="110" y="330" width="25" height="50" rx="10" fill="#363636" />
+                        <rect x="165" y="330" width="25" height="50" rx="10" fill="#363636" />
+
+                        <!-- Body (Vertical) -->
+                        <ellipse cx="150" cy="270" rx="70" ry="85" fill="#4A4A4A" />
+                        <ellipse cx="150" cy="270" rx="50" ry="65" fill="#5A5A5A" /> <!-- Lighter belly -->
+
+                        <!-- Mundu (Kasavu) -->
+                        <path d="M80 300 Q150 310 220 300 L220 350 Q150 360 80 350 Z" fill="#FFF8DC" />
+                        <path d="M80 340 Q150 350 220 340 L220 350 Q150 360 80 350 Z" fill="#FFD700" />
+                        <!-- Gold Border -->
+
+                        <!-- Arms -->
+                        <ellipse cx="90" cy="260" rx="15" ry="35" fill="#363636" transform="rotate(20 90 260)" />
+                        <ellipse cx="210" cy="260" rx="15" ry="35" fill="#363636" transform="rotate(-20 210 260)" />
+
+                        <!-- Head -->
+                        <circle cx="150" cy="190" r="55" fill="#4A4A4A" />
+
+                        <!-- Ears -->
+                        <ellipse cx="100" cy="160" rx="12" ry="18" fill="#363636" transform="rotate(-20 100 160)" />
+                        <circle cx="100" cy="150" r="5" fill="white" /> <!-- White Tip -->
+                        <ellipse cx="200" cy="160" rx="12" ry="18" fill="#363636" transform="rotate(20 200 160)" />
+                        <circle cx="200" cy="150" r="5" fill="white" /> <!-- White Tip -->
+
+                        <!-- Snout/Trunk -->
+                        <path d="M135 210 Q150 280 165 210" fill="#5A5A5A" />
+                        <ellipse cx="150" cy="245" rx="15" ry="10" fill="#363636" /> <!-- Nose tip -->
+
+                        <!-- Eyes - Big and Sparkly -->
+                        <circle cx="130" cy="190" r="10" fill="black" />
+                        <circle cx="127" cy="187" r="3" fill="white" />
+                        <circle cx="170" cy="190" r="10" fill="black" />
+                        <circle cx="167" cy="187" r="3" fill="white" />
+
+                        <!-- Blush -->
+                        <ellipse cx="120" cy="210" rx="10" ry="6" fill="#FFB6C1" opacity="0.6" />
+                        <ellipse cx="180" cy="210" rx="10" ry="6" fill="#FFB6C1" opacity="0.6" />
+
+                        <text x="150" y="390" text-anchor="middle" fill="#21618C" font-family="Comic Neue"
                             font-size="32" font-weight="bold" class="mascot-name">Thangamma</text>
                     </svg>
                 </div>
