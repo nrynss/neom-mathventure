@@ -134,12 +134,14 @@ impl NeomMathGame {
         let operations = match self.difficulty_level {
             1 => vec![Operation::Add],
             2 => vec![Operation::Add, Operation::Subtract],
-            3 => vec![Operation::Add, Operation::Subtract, Operation::Multiply],
+            3 => vec![Operation::Add, Operation::Subtract],
+            4 => vec![Operation::Add, Operation::Subtract, Operation::Multiply],
             _ => vec![Operation::Add, Operation::Subtract, Operation::Multiply, Operation::Divide],
         };
 
         let operation = operations[self.rng.gen_range(0..operations.len())];
         
+        // Default range for Addition and Subtraction
         let range_max = match self.difficulty_level {
             1 => 10,
             2 => 20,
@@ -147,10 +149,19 @@ impl NeomMathGame {
             _ => 100,
         };
 
-        let num1 = self.rng.gen_range(1..=range_max);
-        let num2 = self.rng.gen_range(1..=range_max);
+        let (n1, n2) = match operation {
+            Operation::Multiply => {
+                let mul_range = if self.difficulty_level <= 4 { 10 } else { 12 };
+                (self.rng.gen_range(1..=mul_range), self.rng.gen_range(1..=mul_range))
+            },
+            Operation::Divide => {
+                let div_range = 12;
+                (self.rng.gen_range(1..=div_range), self.rng.gen_range(1..=div_range))
+            },
+            _ => (self.rng.gen_range(1..=range_max), self.rng.gen_range(1..=range_max)),
+        };
 
-        (num1, num2, operation)
+        (n1, n2, operation)
     }
 
     pub fn check_answer(&mut self, user_answer: i32) -> bool {

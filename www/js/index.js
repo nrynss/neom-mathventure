@@ -57,7 +57,7 @@ class GameUI {
 
     async initialize() {
         try {
-            await init(`${BASE_PATH}/pkg/neom_mathventure_bg.wasm`);
+            await init(`${BASE_PATH}/pkg/neom_mathventure_bg.wasm?v=${Date.now() + 1}`);
             this.game = new NeomMathGame();
 
             const engResponse = await fetch(`${BASE_PATH}/locales/english.json`);
