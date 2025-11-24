@@ -1,6 +1,7 @@
 const BASE_PATH = window.NEOM_BASE_PATH || "";
 
 import init, { NeomMathGame } from "../pkg/neom_mathventure.js";
+import { MusicPlayer } from "./music_player.js";
 
 class GameUI {
     constructor() {
@@ -9,7 +10,8 @@ class GameUI {
         this.lastTick = 0;
         this.currentLanguage = "malayalam";
         this.lastSpeaker = null;
-        this.englishLocale = null; // Cache English locale for speech
+        this.englishLocale = null;
+        this.musicPlayer = new MusicPlayer(); // JSON-based music player
 
         this.screens = {
             welcome: document.getElementById('welcome-screen'),
@@ -37,6 +39,7 @@ class GameUI {
 
         this.langButtons = document.querySelectorAll('.lang-btn[data-lang]');
         this.audioToggle = document.getElementById('audio-toggle');
+        this.musicToggle = document.getElementById('music-toggle');
 
         this.mascots = {
             thangamma: {
@@ -57,7 +60,6 @@ class GameUI {
             await init(`${BASE_PATH}/pkg/neom_mathventure_bg.wasm`);
             this.game = new NeomMathGame();
 
-            // Load English for speech
             const engResponse = await fetch(`${BASE_PATH}/locales/english.json`);
             if (engResponse.ok) {
                 this.englishLocale = await engResponse.text();
@@ -99,10 +101,24 @@ class GameUI {
             });
         });
 
+        // Audio toggle - controls speech
         if (this.audioToggle) {
             this.audioToggle.addEventListener('click', () => {
                 const enabled = this.game.toggle_audio();
                 this.audioToggle.textContent = enabled ? '🔊' : '🔇';
+            });
+        }
+
+        // Music toggle - controls background music
+        if (this.musicToggle) {
+            this.musicToggle.addEventListener('click', async () => {
+                if (this.musicPlayer.isCurrentlyPlaying()) {
+                    this.musicPlayer.stop();
+                    this.musicToggle.textContent = '🔇';
+                } else {
+                    await this.musicPlayer.start();
+                    this.musicToggle.textContent = '🎵';
+                }
             });
         }
 
@@ -154,7 +170,6 @@ class GameUI {
         mascotData.text.textContent = message;
         mascotData.bubble.style.opacity = '1';
 
-        // Speak in English
         if (this.englishLocale) {
             const tempGame = new NeomMathGame();
             tempGame.load_locales(this.englishLocale);
@@ -169,7 +184,7 @@ class GameUI {
         }, 3000);
     }
 
-    startGame() {
+    async startGame() {
         if (!this.game) return;
 
         this.game.reset_game();
@@ -183,6 +198,9 @@ class GameUI {
 
         this.showMascotSpeech('thangamma', 'greetings');
         this.lastSpeaker = 'thangamma';
+
+        // Start background music
+        await this.musicPlayer.start();
 
         this.lastTick = performance.now();
         this.gameLoop(this.lastTick);
@@ -222,7 +240,6 @@ class GameUI {
 
         const isCorrect = this.game.check_answer(value);
 
-        // Alternate mascots
         const nextMascot = this.lastSpeaker === 'thangamma' ? 'kannappan' : 'thangamma';
 
         if (isCorrect) {
@@ -272,6 +289,7 @@ class GameUI {
 
     gameOver() {
         cancelAnimationFrame(this.animationFrameId);
+        this.musicPlayer.stop();
         this.showScreen('gameOver');
         this.displays.finalScore.textContent = this.game.get_score();
         this.displays.finalAccuracy.textContent = this.game.get_accuracy();

@@ -1,0 +1,48 @@
+{
+  "title": "Ode to Joy (Beethoven's 9th Symphony)",
+  "composer": "Ludwig van Beethoven",
+  "tempo": 120,
+  "notes": [
+    {"note": "E4", "duration": 0.5},
+    {"note": "E4", "duration": 0.5},
+    {"note": "F4", "duration": 0.5},
+    {"note": "G4", "duration": 0.5},
+    {"note": "G4", "duration": 0.5},
+    {"note": "F4", "duration": 0.5},
+    {"note": "E4", "duration": 0.5},
+    {"note": "D4", "duration": 0.5},
+    {"note": "C4", "duration": 0.5},
+    {"note": "C4", "duration": 0.5},
+    {"note": "D4", "duration": 0.5},
+    {"note": "E4", "duration": 0.5},
+    {"note": "E4", "duration": 0.75},
+    {"note": "D4", "duration": 0.25},
+    {"note": "D4", "duration": 1.0},
+    
+    {"note": "E4", "duration": 0.5},
+    {"note": "E4", "duration": 0.5},
+    {"note": "F4", "duration": 0.5},
+    {"note": "G4", "duration": 0.5},
+    {"note": "G4", "duration": 0.5},
+    {"note": "F4", "duration": 0.5},
+    {"note": "E4", "duration": 0.5},
+    {"note": "D4", "duration": 0.5},
+    {"note": "C4", "duration": 0.5},
+    {"note": "C4", "duration": 0.5},
+    {"note": "D4", "duration": 0.5},
+    {"note": "E4", "duration": 0.5},
+    {"note": "D4", "duration": 0.75},
+    {"note": "C4", "duration": 0.25},
+    {"note": "C4", "duration": 1.0}
+  ],
+  "noteFrequencies": {
+    "C4": 261.63,
+    "D4": 293.66,
+    "E4": 329.63,
+    "F4": 349.23,
+    "G4": 392.00,
+    "A4": 440.00,
+    "B4": 493.88,
+    "C5": 523.25
+  }
+}

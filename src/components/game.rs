@@ -1,5 +1,6 @@
 use crate::components::audio::AudioManager;
 use crate::components::localization::LocalizationManager;
+use crate::components::music::MusicGenerator;
 use wasm_bindgen::prelude::*;
 use web_sys::window;
 use rand::Rng;
@@ -31,6 +32,7 @@ pub struct NeomMathGame {
     rng: rand::rngs::ThreadRng,
     audio: AudioManager,
     localization: LocalizationManager,
+    music: MusicGenerator,
 }
 
 #[wasm_bindgen]
@@ -50,6 +52,7 @@ impl NeomMathGame {
             rng: rand::thread_rng(),
             audio: AudioManager::new(),
             localization: LocalizationManager::new(),
+            music: MusicGenerator::new(),
         };
         game.load_high_score();
         game
@@ -77,6 +80,18 @@ impl NeomMathGame {
     pub fn speak_mascot_message(&self, text: &str, mascot: &str) {
         let pitch = if mascot == "thangamma" { 1.2 } else { 0.8 };
         self.audio.speak_with_pitch(text, pitch);
+    }
+
+    pub fn start_music(&mut self) {
+        self.music.start();
+    }
+
+    pub fn stop_music(&mut self) {
+        self.music.stop();
+    }
+
+    pub fn is_music_playing(&self) -> bool {
+        self.music.is_playing()
     }
 
     pub fn reset_game(&mut self) {

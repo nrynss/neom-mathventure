@@ -20,6 +20,13 @@ web-sys = { version = "0.3", features = [
     "SpeechSynthesisUtterance",
     "SpeechSynthesisVoice",
     "Storage",
+    "AudioContext",
+    "AudioNode",
+    "AudioDestinationNode",
+    "OscillatorNode",
+    "OscillatorType",
+    "GainNode",
+    "AudioParam",
 ] }
 js-sys = "0.3"
 rand = "0.8"
