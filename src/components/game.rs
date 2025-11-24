@@ -1,15 +1,20 @@
-use rand::Rng;
-use serde::{Deserialize, Serialize};
+use crate::components::audio::AudioManager;
+use crate::components::localization::LocalizationManager;
 use wasm_bindgen::prelude::*;
-use web_sys::console;
+use web_sys::window;
+use rand::Rng;
 
-#[derive(Serialize, Deserialize)]
-pub struct Question {
-    first_number: i32,
-    second_number: i32,
-    operation: char,
-    correct_answer: i32,
-    difficulty_level: i32,
+#[derive(Clone, Copy)]
+enum Operation {
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
+}
+
+struct Question {
+    text: String,
+    answer: i32,
 }
 
 #[wasm_bindgen]
@@ -21,14 +26,18 @@ pub struct NeomMathGame {
     consecutive_correct: i32,
     total_questions: i32,
     correct_answers: i32,
-    rng: rand::rngs::ThreadRng, // Store RNG for reuse
+    time_left: i32,
+    max_time: i32,
+    rng: rand::rngs::ThreadRng,
+    audio: AudioManager,
+    localization: LocalizationManager,
 }
 
 #[wasm_bindgen]
 impl NeomMathGame {
     #[wasm_bindgen(constructor)]
     pub fn new() -> NeomMathGame {
-        NeomMathGame {
+        let mut game = NeomMathGame {
             current_score: 0,
             current_question: None,
             difficulty_level: 1,
@@ -36,123 +45,38 @@ impl NeomMathGame {
             consecutive_correct: 0,
             total_questions: 0,
             correct_answers: 0,
-            rng: rand::thread_rng(), // Initialize once
+            time_left: 30,
+            max_time: 30,
+            rng: rand::thread_rng(),
+            audio: AudioManager::new(),
+            localization: LocalizationManager::new(),
+        };
+        game.load_high_score();
+        game
+    }
+
+    pub fn load_locales(&mut self, json_str: &str) {
+        if let Err(e) = self.localization.load_translations(json_str) {
+            web_sys::console::error_1(&format!("Error loading locales: {}", e).into());
         }
     }
 
-    pub fn generate_question(&mut self) -> String {
-        let operations = match self.difficulty_level {
-            1 => vec!['+'],
-            2 => vec!['+', '-'],
-            3 => vec!['+', '-', '*'],
-            _ => vec!['+', '-', '*', '/'], // Added division for higher levels
-        };
-
-        let operation = operations[self.rng.gen_range(0..operations.len())];
-
-        // Adjust number range based on difficulty
-        let range = 5 * self.difficulty_level;
-
-        // Generate numbers based on operation
-        let (first, second, correct_answer) = match operation {
-            '+' => {
-                let first = self.rng.gen_range(1..=range);
-                let second = self.rng.gen_range(1..=range);
-                (first, second, first + second)
-            }
-            '-' => {
-                let first = self.rng.gen_range(1..=range);
-                let second = self.rng.gen_range(1..=first); // Ensure positive results
-                (first, second, first - second)
-            }
-            '*' => {
-                let first = self.rng.gen_range(1..=range);
-                let second = self.rng.gen_range(1..=range / 2); // Keep multiplications manageable
-                (first, second, first * second)
-            }
-            '/' => {
-                // Generate division with whole number result
-                let second = self.rng.gen_range(1..=(range / 2).max(1));
-                let correct_answer = self.rng.gen_range(1..=(range / second).max(1));
-                let first = correct_answer * second;
-                (first, second, correct_answer)
-            }
-            _ => unreachable!(),
-        };
-
-        let question = Question {
-            first_number: first,
-            second_number: second,
-            operation,
-            correct_answer,
-            difficulty_level: self.difficulty_level,
-        };
-
-        self.current_question = Some(question);
-        self.total_questions += 1;
-
-        format!("{} {} {}", first, operation, second)
+    pub fn get_ui_text(&self, key: &str) -> String {
+        self.localization.get_text(key)
     }
 
-    pub fn check_answer(&mut self, user_answer: i32) -> bool {
-        if let Some(question) = &self.current_question {
-            let correct = user_answer == question.correct_answer;
-
-            if correct {
-                self.current_score += self.difficulty_level * 10;
-                self.consecutive_correct += 1;
-                self.correct_answers += 1;
-
-                // Increase difficulty every 5 consecutive correct answers
-                if self.consecutive_correct >= 5 {
-                    self.difficulty_level += 1;
-                    self.consecutive_correct = 0;
-                    console::log_1(&"Level Up!".into());
-                }
-
-                // Update high score
-                if self.current_score > self.high_score {
-                    self.high_score = self.current_score;
-                }
-            } else {
-                self.consecutive_correct = 0;
-            }
-
-            correct
-        } else {
-            console::log_1(&"Error: Attempting to check answer without active question".into());
-            false
-        }
+    pub fn get_mascot_message(&self, mascot: &str, category: &str) -> String {
+        let path = format!("mascots.{}.{}", mascot, category);
+        self.localization.get_random_phrase(&path)
     }
 
-    pub fn get_score(&self) -> i32 {
-        self.current_score
+    pub fn toggle_audio(&mut self) -> bool {
+        self.audio.toggle()
     }
 
-    pub fn get_high_score(&self) -> i32 {
-        self.high_score
-    }
-
-    #[wasm_bindgen]
-    pub fn set_high_score(&mut self, score: i32) {
-        // For loading saved high scores
-        self.high_score = score;
-    }
-
-    pub fn get_difficulty(&self) -> i32 {
-        self.difficulty_level
-    }
-
-    pub fn get_accuracy(&self) -> f64 {
-        if self.total_questions == 0 {
-            0.0
-        } else {
-            (self.correct_answers as f64 / self.total_questions as f64 * 100.0).round()
-        }
-    }
-
-    pub fn get_correct_answer(&self) -> Option<i32> {
-        self.current_question.as_ref().map(|q| q.correct_answer)
+    pub fn speak_mascot_message(&self, text: &str, mascot: &str) {
+        let pitch = if mascot == "thangamma" { 1.2 } else { 0.8 };
+        self.audio.speak_with_pitch(text, pitch);
     }
 
     pub fn reset_game(&mut self) {
@@ -161,6 +85,139 @@ impl NeomMathGame {
         self.consecutive_correct = 0;
         self.total_questions = 0;
         self.correct_answers = 0;
-        // Don't reset high score as it should persist
+        self.time_left = 30;
+        self.max_time = 30;
+        self.current_question = None;
+    }
+
+    pub fn generate_question(&mut self) -> String {
+        let (num1, num2, op) = self.create_question_params();
+        
+        let (question_text, answer) = match op {
+            Operation::Add => (format!("{} + {}", num1, num2), num1 + num2),
+            Operation::Subtract => {
+                let (n1, n2) = if num1 >= num2 { (num1, num2) } else { (num2, num1) };
+                (format!("{} - {}", n1, n2), n1 - n2)
+            },
+            Operation::Multiply => (format!("{} × {}", num1, num2), num1 * num2),
+            Operation::Divide => {
+                let product = num1 * num2;
+                (format!("{} ÷ {}", product, num1), num2)
+            },
+        };
+
+        self.current_question = Some(Question {
+            text: question_text.clone(),
+            answer,
+        });
+        
+        self.total_questions += 1;
+        question_text
+    }
+
+    fn create_question_params(&mut self) -> (i32, i32, Operation) {
+        let operations = match self.difficulty_level {
+            1 => vec![Operation::Add],
+            2 => vec![Operation::Add, Operation::Subtract],
+            3 => vec![Operation::Add, Operation::Subtract, Operation::Multiply],
+            _ => vec![Operation::Add, Operation::Subtract, Operation::Multiply, Operation::Divide],
+        };
+
+        let operation = operations[self.rng.gen_range(0..operations.len())];
+        
+        let range_max = match self.difficulty_level {
+            1 => 10,
+            2 => 20,
+            3 => 50,
+            _ => 100,
+        };
+
+        let num1 = self.rng.gen_range(1..=range_max);
+        let num2 = self.rng.gen_range(1..=range_max);
+
+        (num1, num2, operation)
+    }
+
+    pub fn check_answer(&mut self, user_answer: i32) -> bool {
+        if let Some(q) = &self.current_question {
+            if user_answer == q.answer {
+                self.handle_correct_answer();
+                return true;
+            }
+        }
+        self.consecutive_correct = 0;
+        false
+    }
+
+    fn handle_correct_answer(&mut self) {
+        self.current_score += 10 * self.difficulty_level;
+        self.correct_answers += 1;
+        self.consecutive_correct += 1;
+        
+        self.time_left = (self.time_left + 2).min(self.max_time);
+
+        if self.consecutive_correct >= 3 {
+            self.difficulty_level += 1;
+            self.consecutive_correct = 0;
+            self.max_time = (self.max_time - 2).max(10);
+        }
+
+        if self.current_score > self.high_score {
+            self.high_score = self.current_score;
+            self.save_high_score();
+        }
+    }
+
+    pub fn get_score(&self) -> i32 {
+        self.current_score
+    }
+
+    pub fn get_difficulty(&self) -> i32 {
+        self.difficulty_level
+    }
+
+    pub fn get_high_score(&self) -> i32 {
+        self.high_score
+    }
+
+    pub fn get_accuracy(&self) -> i32 {
+        if self.total_questions == 0 {
+            0
+        } else {
+            (self.correct_answers as f32 / self.total_questions as f32 * 100.0) as i32
+        }
+    }
+
+    pub fn tick(&mut self) -> bool {
+        if self.time_left > 0 {
+            self.time_left -= 1;
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn get_time_left(&self) -> i32 {
+        self.time_left
+    }
+
+    fn load_high_score(&mut self) {
+        if let Some(win) = window() {
+            if let Ok(Some(storage)) = win.local_storage() {
+                if let Ok(Some(score_str)) = storage.get_item("neom_mathventure_highscore") {
+                    if let Ok(score) = score_str.parse() {
+                        self.high_score = score;
+                    }
+                }
+            }
+        }
+    }
+
+    fn save_high_score(&self) {
+        if let Some(win) = window() {
+            if let Ok(Some(storage)) = win.local_storage() {
+                let _ = storage.set_item("neom_mathventure_highscore", &self.high_score.to_string());
+            }
+        }
     }
 }

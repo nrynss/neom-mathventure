@@ -83,22 +83,6 @@ ln -s ../pkg .  # Create symbolic link to pkg directory
 
 ```bash
 # Using Python 3
-python -m http.server 8080
-```
-
-6. Open in browser:
-
-```url
-http://localhost:8080
-```
-
-## 🎮 How to Play
-
-1. Select your preferred language (Malayalam/Manglish/English)
-2. Enter your age (5-8 years)
-3. Solve mathematics problems within the time limit
-4. Earn bonus time for correct answers
-5. Progress through increasing difficulty levels
 6. Interact with Thangamma and Kannappan for encouragement!
 
 ## 🎨 Cultural Elements

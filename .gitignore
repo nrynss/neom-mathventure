@@ -65,3 +65,7 @@ Thumbs.db
 hugo.md
 # Test artifacts
 /wasm-bindgen-test/
+
+# Hugo hosting
+hugo_dist/
+build_hugo.ps1

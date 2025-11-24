@@ -101,21 +101,7 @@ class LanguageLoader {
   getText(path) {
     if (!this.translations[this.currentLanguage]) {
       return this.getFromDefault(path);
-    const result = path
-      .split(".")
-      .reduce(
-        (obj, key) => obj?.[key],
-        this.translations[this.currentLanguage],
-      );
-    if (result === undefined) {
-      // Try to get from default translations if not found
-      const defaultValue = path
-        .split(".")
-        .reduce((obj, key) => obj?.[key], this.defaultTranslations);
-      return defaultValue || "";
     }
-    return result;
-  }
 
     const result = path
       .split(".")
