@@ -2,16 +2,18 @@ const BASE_PATH = window.NEOM_BASE_PATH || "";
 
 import init, { NeomMathGame } from "../pkg/neom_mathventure.js";
 import { MusicPlayer } from "./music_player.js";
+import { Confetti } from "./confetti.js";
 
 class GameUI {
     constructor() {
         this.game = null;
         this.animationFrameId = null;
         this.lastTick = 0;
-        this.currentLanguage = "malayalam";
+        this.currentLanguage = "english"; // Default to English
         this.lastSpeaker = null;
         this.englishLocale = null;
         this.musicPlayer = new MusicPlayer(); // JSON-based music player
+        this.confetti = new Confetti();
 
         this.screens = {
             welcome: document.getElementById('welcome-screen'),
@@ -65,7 +67,9 @@ class GameUI {
                 this.englishLocale = await engResponse.text();
             }
 
+            // Load English by default
             await this.loadLanguage(this.currentLanguage);
+            this.updateActiveLangButton(this.currentLanguage);
             this.updateStaticText();
             this.bindEvents();
             this.updateHighScoreDisplay();
@@ -250,6 +254,9 @@ class GameUI {
             const q = this.game.generate_question();
             this.updateQuestionDisplay(q);
             this.inputs.answer.value = '';
+
+            // Small confetti burst for correct answer? Maybe too much.
+            // Let's just do it for high score or game over.
         } else {
             const feedbackMsg = this.game.get_mascot_message('feedback', 'incorrect') || "Try Again!";
             this.showFeedback(feedbackMsg, "error");
@@ -295,6 +302,9 @@ class GameUI {
         this.displays.finalAccuracy.textContent = this.game.get_accuracy();
 
         this.showMascotSpeech('kannappan', 'celebrations');
+
+        // Fire confetti!
+        this.confetti.fire();
     }
 }
 

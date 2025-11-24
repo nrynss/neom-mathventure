@@ -24,111 +24,112 @@
     <!-- Main Game Container -->
     <div class="game-container" role="application" aria-label="Math Adventure Game">
 
-        <!-- Mascots Container -->
-        <div class="mascots-container">
-            <!-- Thangamma (Tapir) -->
-            <div class="mascot-wrapper tapir-wrapper">
-                <svg class="mascot tapir" viewBox="0 0 300 400" aria-label="Thangamma the Tapir">
-                    <!-- Speech Bubble -->
-                    <g class="speech-bubble" opacity="0">
-                        <path
-                            d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z"
-                            fill="white" stroke="#21618C" stroke-width="3" />
-                        <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3" />
-                        <text x="150" y="120" text-anchor="middle" class="speech-text primary-text" fill="#21618C"
-                            font-size="24">Hello!</text>
-                    </g>
-                    <!-- Body -->
-                    <ellipse cx="150" cy="270" rx="90" ry="60" fill="#4A4A4A" />
-                    <rect x="60" y="260" width="180" height="8" fill="#FFD700" /> <!-- Kasavu -->
-                    <rect x="90" y="310" width="25" ry="8" height="45" fill="#363636" />
-                    <rect x="185" y="310" width="25" ry="8" height="45" fill="#363636" />
-                    <ellipse cx="150" cy="260" rx="85" ry="55" fill="#5A5A5A" />
-                    <path d="M210 240 Q240 245 255 230 Q265 215 240 205 Q225 200 210 210" fill="#4A4A4A" />
-                    <ellipse cx="245" cy="220" rx="15" ry="9" fill="#363636" />
-                    <circle cx="215" cy="200" r="8" fill="black" />
-                    <circle cx="217" cy="198" r="3" fill="white" />
-                    <text x="150" y="380" text-anchor="middle" fill="#21618C" font-family="Comic Neue" font-size="32"
-                        font-weight="bold" class="mascot-name">Thangamma</text>
-                </svg>
-            </div>
+        <div class="game-card">
+            <!-- Mascots Container -->
+            <div class="mascots-container">
+                <!-- Thangamma (Tapir) -->
+                <div class="mascot-wrapper tapir-wrapper">
+                    <svg class="mascot tapir" viewBox="0 0 300 400" aria-label="Thangamma the Tapir">
+                        <!-- Speech Bubble -->
+                        <g class="speech-bubble" opacity="0">
+                            <path
+                                d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z"
+                                fill="white" stroke="#21618C" stroke-width="3" />
+                            <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3" />
+                            <text x="150" y="120" text-anchor="middle" class="speech-text primary-text" fill="#21618C"
+                                font-size="24">Hello!</text>
+                        </g>
+                        <!-- Body -->
+                        <ellipse cx="150" cy="270" rx="90" ry="60" fill="#4A4A4A" />
+                        <rect x="60" y="260" width="180" height="8" fill="#FFD700" /> <!-- Kasavu -->
+                        <rect x="90" y="310" width="25" ry="8" height="45" fill="#363636" />
+                        <rect x="185" y="310" width="25" ry="8" height="45" fill="#363636" />
+                        <ellipse cx="150" cy="260" rx="85" ry="55" fill="#5A5A5A" />
+                        <path d="M210 240 Q240 245 255 230 Q265 215 240 205 Q225 200 210 210" fill="#4A4A4A" />
+                        <ellipse cx="245" cy="220" rx="15" ry="9" fill="#363636" />
+                        <circle cx="215" cy="200" r="8" fill="black" />
+                        <circle cx="217" cy="198" r="3" fill="white" />
+                        <text x="150" y="380" text-anchor="middle" fill="#21618C" font-family="Comic Neue"
+                            font-size="32" font-weight="bold" class="mascot-name">Thangamma</text>
+                    </svg>
+                </div>
 
-            <!-- Kannappan (Capybara) -->
-            <div class="mascot-wrapper capybara-wrapper">
-                <svg class="mascot capybara" viewBox="0 0 300 400" aria-label="Kannappan the Capybara">
-                    <!-- Speech Bubble -->
-                    <g class="speech-bubble" opacity="0">
-                        <path
-                            d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z"
-                            fill="white" stroke="#21618C" stroke-width="3" />
-                        <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3" />
-                        <text x="150" y="120" text-anchor="middle" class="speech-text primary-text" fill="#21618C"
-                            font-size="24">Hi!</text>
-                    </g>
-                    <!-- Body -->
-                    <ellipse cx="150" cy="280" rx="75" ry="60" fill="#8B4513" />
-                    <rect x="75" y="270" width="150" height="8" fill="#FFD700" /> <!-- Kasavu -->
-                    <rect x="95" y="320" width="25" ry="8" height="30" fill="#6B3410" />
-                    <rect x="180" y="320" width="25" ry="8" height="30" fill="#6B3410" />
-                    <circle cx="150" cy="230" r="53" fill="#8B4513" />
-                    <path d="M147 190 L153 190 L150 205 Z" fill="#FF0000" /> <!-- Tilak -->
-                    <path d="M125 245 Q150 260 175 245" stroke="#2C1810" stroke-width="3" fill="none" />
-                    <!-- Mustache -->
-                    <circle cx="127" cy="215" r="9" fill="#2C1810" />
-                    <circle cx="172" cy="215" r="9" fill="#2C1810" />
-                    <circle cx="129" cy="213" r="3" fill="white" />
-                    <circle cx="174" cy="213" r="3" fill="white" />
-                    <circle cx="112" cy="190" r="12" fill="#6B3410" />
-                    <circle cx="187" cy="190" r="12" fill="#6B3410" />
-                    <text x="150" y="380" text-anchor="middle" fill="#21618C" font-family="Comic Neue" font-size="32"
-                        font-weight="bold" class="mascot-name">Kannappan</text>
-                </svg>
-            </div>
-        </div>
-
-        <!-- Screens -->
-
-        <!-- Welcome Screen -->
-        <div id="welcome-screen" class="screen active">
-            <h1 class="game-title">Neom Mathventure</h1>
-            <div class="content-box">
-                <p class="intro-text">Welcome to the world of math adventures!</p>
-                <button id="start-btn" class="primary-button">Let's Begin! 🚀</button>
-            </div>
-        </div>
-
-        <!-- Game Screen -->
-        <div id="game-screen" class="screen hidden">
-            <div class="stats-bar">
-                <div class="stat-item"><span class="label">Time:</span> <span id="time-display">30</span>s</div>
-                <div class="stat-item"><span class="label">Score:</span> <span id="score-display">0</span></div>
-                <div class="stat-item"><span class="label">High Score:</span> <span id="highscore-display">0</span>
+                <!-- Kannappan (Capybara) -->
+                <div class="mascot-wrapper capybara-wrapper">
+                    <svg class="mascot capybara" viewBox="0 0 300 400" aria-label="Kannappan the Capybara">
+                        <!-- Speech Bubble -->
+                        <g class="speech-bubble" opacity="0">
+                            <path
+                                d="M20 40 L280 40 Q320 40 320 80 L320 160 Q320 200 280 200 L20 200 Q-20 200 -20 160 L-20 80 Q-20 40 20 40Z"
+                                fill="white" stroke="#21618C" stroke-width="3" />
+                            <path d="M150 200 L130 230 L170 200" fill="white" stroke="#21618C" stroke-width="3" />
+                            <text x="150" y="120" text-anchor="middle" class="speech-text primary-text" fill="#21618C"
+                                font-size="24">Hi!</text>
+                        </g>
+                        <!-- Body -->
+                        <ellipse cx="150" cy="280" rx="75" ry="60" fill="#8B4513" />
+                        <rect x="75" y="270" width="150" height="8" fill="#FFD700" /> <!-- Kasavu -->
+                        <rect x="95" y="320" width="25" ry="8" height="30" fill="#6B3410" />
+                        <rect x="180" y="320" width="25" ry="8" height="30" fill="#6B3410" />
+                        <circle cx="150" cy="230" r="53" fill="#8B4513" />
+                        <path d="M147 190 L153 190 L150 205 Z" fill="#FF0000" /> <!-- Tilak -->
+                        <path d="M125 245 Q150 260 175 245" stroke="#2C1810" stroke-width="3" fill="none" />
+                        <!-- Mustache -->
+                        <circle cx="127" cy="215" r="9" fill="#2C1810" />
+                        <circle cx="172" cy="215" r="9" fill="#2C1810" />
+                        <circle cx="129" cy="213" r="3" fill="white" />
+                        <circle cx="174" cy="213" r="3" fill="white" />
+                        <circle cx="112" cy="190" r="12" fill="#6B3410" />
+                        <circle cx="187" cy="190" r="12" fill="#6B3410" />
+                        <text x="150" y="380" text-anchor="middle" fill="#21618C" font-family="Comic Neue"
+                            font-size="32" font-weight="bold" class="mascot-name">Kannappan</text>
+                    </svg>
                 </div>
             </div>
 
-            <div class="game-area">
-                <div class="level-display">Level <span id="level-display">1</span></div>
-                <div id="question-display" class="question">Ready?</div>
+            <!-- Screens -->
 
-                <div class="input-area">
-                    <input type="number" id="answer-input" placeholder="?" autocomplete="off" />
-                    <button id="check-btn" class="primary-button">Check! 🎯</button>
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen active">
+                <h1 class="game-title">Neom Mathventure</h1>
+                <div class="content-box">
+                    <p class="intro-text">Welcome to the world of math adventures!</p>
+                    <button id="start-btn" class="primary-button">Let's Begin! 🚀</button>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="screen hidden">
+                <div class="stats-bar">
+                    <div class="stat-item"><span class="label">Time:</span> <span id="time-display">30</span>s</div>
+                    <div class="stat-item"><span class="label">Score:</span> <span id="score-display">0</span></div>
+                    <div class="stat-item"><span class="label">High Score:</span> <span id="highscore-display">0</span>
+                    </div>
                 </div>
 
-                <div id="feedback-message" class="message"></div>
+                <div class="game-area">
+                    <div class="level-display">Level <span id="level-display">1</span></div>
+                    <div id="question-display" class="question">Ready?</div>
+
+                    <div class="input-area">
+                        <input type="number" id="answer-input" placeholder="?" autocomplete="off" />
+                        <button id="check-btn" class="primary-button">Check! 🎯</button>
+                    </div>
+
+                    <div id="feedback-message" class="message"></div>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="screen hidden">
+                <h2 class="game-title">Game Over!</h2>
+                <div class="content-box">
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <p>Accuracy: <span id="final-accuracy">0</span>%</p>
+                    <button id="restart-btn" class="primary-button">Play Again 🔄</button>
+                </div>
             </div>
         </div>
-
-        <!-- Game Over Screen -->
-        <div id="game-over-screen" class="screen hidden">
-            <h2 class="game-title">Game Over!</h2>
-            <div class="content-box">
-                <p>Final Score: <span id="final-score">0</span></p>
-                <p>Accuracy: <span id="final-accuracy">0</span>%</p>
-                <button id="restart-btn" class="primary-button">Play Again 🔄</button>
-            </div>
-        </div>
-
     </div>
 
     <script>
