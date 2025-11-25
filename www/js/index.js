@@ -1,4 +1,5 @@
-const BASE_PATH = window.NEOM_BASE_PATH || "";
+// BASE_PATH removed, using relative paths
+
 
 import init, { NeomMathGame } from "../pkg/neom_mathventure.js";
 import { MusicPlayer } from "./music_player.js";
@@ -59,10 +60,10 @@ class GameUI {
 
     async initialize() {
         try {
-            await init(`${BASE_PATH}/pkg/neom_mathventure_bg.wasm?v=${Date.now() + 1}`);
+            await init(`./pkg/neom_mathventure_bg.wasm?v=${Date.now() + 1}`);
             this.game = new NeomMathGame();
 
-            const engResponse = await fetch(`${BASE_PATH}/locales/english.json`);
+            const engResponse = await fetch(`./locales/english.json`);
             if (engResponse.ok) {
                 this.englishLocale = await engResponse.text();
             }
@@ -80,7 +81,7 @@ class GameUI {
 
     async loadLanguage(lang) {
         try {
-            const response = await fetch(`${BASE_PATH}/locales/${lang}.json`);
+            const response = await fetch(`./locales/${lang}.json`);
             if (!response.ok) {
                 console.warn(`Failed to load ${lang}`);
                 return;

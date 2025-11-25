@@ -1,6 +1,7 @@
 # Rust build artifacts
 /target/
 /pkg/
+www/pkg/
 **/*.rs.bk
 Cargo.lock
 
@@ -68,4 +69,3 @@ hugo.md
 
 # Hugo hosting
 hugo_dist/
-build_hugo.ps1

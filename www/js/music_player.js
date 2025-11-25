@@ -78,7 +78,7 @@ export class MusicPlayer {
         this.currentNoteIndex = (this.currentNoteIndex + 10) % notes.length;
     }
 
-    async start(melodyPath = 'music/ode_to_joy.json') {
+    async start(melodyPath = './music/ode_to_joy.json') {
         if (this.isPlaying) return;
 
         await this.initialize();
