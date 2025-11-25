@@ -19,7 +19,7 @@
 body {
     font-family: var(--font-main);
     background-color: var(--bg-color);
-    background-image: 
+    background-image:
         radial-gradient(circle at 10% 20%, rgba(46, 134, 193, 0.1) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(241, 196, 15, 0.1) 0%, transparent 20%);
     color: var(--text-color);
@@ -121,8 +121,15 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 /* Speech Bubbles */
@@ -157,8 +164,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Typography */
@@ -166,7 +180,7 @@ body {
     font-size: 2.5rem;
     color: var(--primary-color);
     margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 .intro-text {
@@ -208,7 +222,7 @@ body {
     background: rgba(236, 240, 241, 0.5);
     padding: 0.8rem;
     border-radius: 15px;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .stat-item {
@@ -232,7 +246,7 @@ body {
     font-weight: bold;
     margin-bottom: 2rem;
     color: var(--primary-color);
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 .input-area {
@@ -277,15 +291,38 @@ body {
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-    40% {transform: translateY(-10px);}
-    60% {transform: translateY(-5px);}
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
 }
 
 @keyframes shake {
-    0%, 100% {transform: translateX(0);}
-    25% {transform: translateX(-5px);}
-    75% {transform: translateX(5px);}
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
 }
 
 /* Responsive - iPhone 7 and similar */
@@ -331,7 +368,7 @@ body {
         gap: 0.5rem;
         justify-content: center;
     }
-    
+
     .stat-item {
         font-size: 1rem;
         margin: 0 0.5rem;
@@ -344,9 +381,72 @@ body {
         right: 0;
         flex-wrap: wrap;
     }
-    
+
     .lang-btn {
         padding: 0.3rem 0.6rem;
         font-size: 0.9rem;
+    }
+}
+
+/* Microphone Button */
+.mic-btn {
+    background: var(--white);
+    border: 3px solid var(--primary-color);
+    color: var(--primary-color);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mic-btn:hover {
+    transform: scale(1.05);
+    background: #f8f9fa;
+}
+
+.mic-btn:active {
+    transform: scale(0.95);
+}
+
+.mic-btn.listening {
+    background: #e74c3c;
+    color: white;
+    border-color: #c0392b;
+    animation: pulse 1.5s infinite;
+}
+
+.mic-btn.loading {
+    opacity: 0.7;
+    cursor: wait;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(231, 76, 60, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

@@ -3,6 +3,7 @@ const BASE_PATH = window.NEOM_BASE_PATH || "";
 import init, { NeomMathGame } from "../pkg/neom_mathventure.js";
 import { MusicPlayer } from "./music_player.js";
 import { Confetti } from "./confetti.js";
+import { AIManager } from "./ai_manager.js";
 
 class GameUI {
     constructor() {
@@ -14,6 +15,11 @@ class GameUI {
         this.englishLocale = null;
         this.musicPlayer = new MusicPlayer(); // JSON-based music player
         this.confetti = new Confetti();
+        this.aiManager = new AIManager();
+
+        this.mediaRecorder = null;
+        this.audioChunks = [];
+        this.isRecording = false;
 
         this.screens = {
             welcome: document.getElementById('welcome-screen'),
@@ -36,7 +42,8 @@ class GameUI {
             answer: document.getElementById('answer-input'),
             checkBtn: document.getElementById('check-btn'),
             startBtn: document.getElementById('start-btn'),
-            restartBtn: document.getElementById('restart-btn')
+            restartBtn: document.getElementById('restart-btn'),
+            micBtn: document.getElementById('mic-btn')
         };
 
         this.langButtons = document.querySelectorAll('.lang-btn[data-lang]');
@@ -73,6 +80,9 @@ class GameUI {
             this.updateStaticText();
             this.bindEvents();
             this.updateHighScoreDisplay();
+
+            // Initialize AI
+            this.aiManager.initialize();
         } catch (error) {
             console.error("Initialization failed:", error);
         }
@@ -143,6 +153,79 @@ class GameUI {
         this.inputs.answer.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.checkAnswer();
         });
+
+        if (this.inputs.micBtn) {
+            console.log("Mic button found, attaching listener");
+            this.inputs.micBtn.addEventListener('click', () => {
+                console.log("Mic button clicked");
+                this.toggleRecording();
+            });
+        } else {
+            console.error("Mic button NOT found in DOM");
+        }
+    }
+
+    async toggleRecording() {
+        if (this.isRecording) {
+            this.stopRecording();
+        } else {
+            await this.startRecording();
+        }
+    }
+
+    async startRecording() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert("Microphone not supported in this browser.");
+            return;
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            this.mediaRecorder = new MediaRecorder(stream);
+            this.audioChunks = [];
+
+            this.mediaRecorder.ondataavailable = (event) => {
+                this.audioChunks.push(event.data);
+            };
+
+            this.mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+                console.log("Audio recorded. Size:", audioBlob.size, "Type:", audioBlob.type);
+
+                this.inputs.micBtn.classList.remove('listening');
+                this.inputs.micBtn.classList.add('loading');
+
+                const text = await this.aiManager.transcribe(audioBlob);
+                console.log("Transcribed Text:", text);
+
+                this.inputs.micBtn.classList.remove('loading');
+
+                if (text) {
+                    const number = this.aiManager.parseNumber(text);
+                    console.log("Parsed Number:", number);
+                    if (number !== null) {
+                        this.inputs.answer.value = number;
+                        this.checkAnswer();
+                    }
+                }
+
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            this.mediaRecorder.start();
+            this.isRecording = true;
+            this.inputs.micBtn.classList.add('listening');
+        } catch (err) {
+            console.error("Mic error:", err);
+            alert("Could not access microphone.");
+        }
+    }
+
+    stopRecording() {
+        if (this.mediaRecorder && this.isRecording) {
+            this.mediaRecorder.stop();
+            this.isRecording = false;
+        }
     }
 
     updateActiveLangButton(lang) {
@@ -254,9 +337,6 @@ class GameUI {
             const q = this.game.generate_question();
             this.updateQuestionDisplay(q);
             this.inputs.answer.value = '';
-
-            // Small confetti burst for correct answer? Maybe too much.
-            // Let's just do it for high score or game over.
         } else {
             const feedbackMsg = this.game.get_mascot_message('feedback', 'incorrect') || "Try Again!";
             this.showFeedback(feedbackMsg, "error");
