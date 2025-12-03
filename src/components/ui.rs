@@ -2,16 +2,19 @@ use dioxus::prelude::*;
 use crate::components::game::NeomMathGame;
 
 #[component]
-pub fn WelcomeScreen(onstart: EventHandler<()>) -> Element {
+#[component]
+pub fn WelcomeScreen(game: Signal<NeomMathGame>, onstart: EventHandler<()>) -> Element {
+    let current_game = game.read();
     rsx! {
         div { class: "screen active", id: "welcome-screen",
-            h1 { class: "game-title", "Neom Mathventure" }
+            h1 { class: "game-title", "{current_game.get_ui_text(\"ui.title\")}" }
             div { class: "content-box",
-                p { class: "intro-text", "Welcome to the world of math adventures!" }
+                p { class: "intro-text", "{current_game.get_ui_text(\"ui.welcomeMessage\")}" }
+                p { class: "intro-subtext", "{current_game.get_ui_text(\"ui.welcomeIntro\")}" }
                 button {
                     class: "primary-button",
                     onclick: move |_| onstart.call(()),
-                    "Let's Begin! 🚀"
+                    "{current_game.get_ui_text(\"ui.buttons.start\")}"
                 }
             }
         }
@@ -37,25 +40,25 @@ pub fn GameScreen(
         div { class: "screen active", id: "game-screen",
             div { class: "stats-bar",
                 div { class: "stat-item",
-                    span { class: "label", "Time:" }
+                    span { class: "label", "{current_game.get_ui_text(\"ui.timer\")}:" }
                     " "
                     span { id: "time-display", "{time_left}" }
                     "s"
                 }
                 div { class: "stat-item",
-                    span { class: "label", "Score:" }
+                    span { class: "label", "{current_game.get_ui_text(\"ui.score\")}:" }
                     " "
                     span { id: "score-display", "{score}" }
                 }
                 div { class: "stat-item",
-                    span { class: "label", "High Score:" }
+                    span { class: "label", "{current_game.get_ui_text(\"ui.highScore\")}:" }
                     " "
                     span { id: "highscore-display", "{high_score}" }
                 }
             }
 
             div { class: "game-area",
-                div { class: "level-display", "Level {level}" }
+                div { class: "level-display", "{current_game.get_ui_text(\"ui.level\")} {level}" }
                 div { id: "question-display", class: "question", "{question} = ?" }
 
                 div { class: "input-area",
@@ -82,7 +85,7 @@ pub fn GameScreen(
                             oncheck.call(answer());
                             answer.set(String::new());
                         },
-                        "Check! 🎯"
+                        "{current_game.get_ui_text(\"ui.buttons.check\")}"
                     }
                 }
 
@@ -94,6 +97,7 @@ pub fn GameScreen(
 
 #[component]
 pub fn GameOverScreen(
+    game: Signal<NeomMathGame>,
     score: i32,
     accuracy: i32,
     onrestart: EventHandler<()>,
@@ -102,17 +106,19 @@ pub fn GameOverScreen(
         crate::components::confetti::Confetti::fire();
     });
 
+    let current_game = game.read();
+
     rsx! {
         div { class: "screen active", id: "game-over-screen",
-            h2 { class: "game-title", "Game Over!" }
+            h2 { class: "game-title", "{current_game.get_ui_text(\"ui.gameOver\")}" }
             div { class: "content-box",
-                p { "Final Score: ", span { id: "final-score", "{score}" } }
-                p { "Accuracy: ", span { id: "final-accuracy", "{accuracy}" } "%" }
+                p { "{current_game.get_ui_text(\"ui.finalScore\")}: ", span { id: "final-score", "{score}" } }
+                p { "{current_game.get_ui_text(\"ui.finalAccuracy\")}: ", span { id: "final-accuracy", "{accuracy}" } "%" }
                 button {
                     id: "restart-btn",
                     class: "primary-button",
                     onclick: move |_| onrestart.call(()),
-                    "Play Again 🔄"
+                    "{current_game.get_ui_text(\"ui.buttons.playAgain\")}"
                 }
             }
         }

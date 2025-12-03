@@ -42,6 +42,17 @@ fn App() -> Element {
         }
     });
 
+    // Initial Locale Load
+    use_effect(move || {
+        spawn(async move {
+            if let Ok(response) = gloo_net::http::Request::get("locales/english.json").send().await {
+                if let Ok(text) = response.text().await {
+                    game.write().load_locales(&text);
+                }
+            }
+        });
+    });
+
     rsx! {
         div { class: "game-container",
             LanguageSwitcher {
@@ -73,27 +84,31 @@ fn App() -> Element {
                         mascot_type: MascotType::Thangamma,
                         speech_text: if mascot_speech().0 == MascotType::Thangamma { mascot_speech().1 } else { None },
                         onclick: move |_| {
-                            let text = "Hello!";
-                            mascot_speech.set((MascotType::Thangamma, Some(text.to_string())));
-                            game.write().speak_mascot_message(text, "thangamma");
-                            // Clear after 3s
-                            spawn(async move {
-                                gloo_timers::future::TimeoutFuture::new(3000).await;
-                                mascot_speech.set((MascotType::Thangamma, None));
-                            });
+                            let text = game.read().get_mascot_message("thangamma", "greetings");
+                            if !text.is_empty() {
+                                mascot_speech.set((MascotType::Thangamma, Some(text.clone())));
+                                game.write().speak_mascot_message(&text, "thangamma");
+                                // Clear after 3s
+                                spawn(async move {
+                                    gloo_timers::future::TimeoutFuture::new(3000).await;
+                                    mascot_speech.set((MascotType::Thangamma, None));
+                                });
+                            }
                         }
                     }
                     Mascot {
                         mascot_type: MascotType::Kannappan,
                         speech_text: if mascot_speech().0 == MascotType::Kannappan { mascot_speech().1 } else { None },
                         onclick: move |_| {
-                            let text = "Hi!";
-                            mascot_speech.set((MascotType::Kannappan, Some(text.to_string())));
-                            game.write().speak_mascot_message(text, "kannappan");
-                            spawn(async move {
-                                gloo_timers::future::TimeoutFuture::new(3000).await;
-                                mascot_speech.set((MascotType::Kannappan, None));
-                            });
+                            let text = game.read().get_mascot_message("kannappan", "motivation"); // Using motivation as greeting for now or add greeting to json
+                            if !text.is_empty() {
+                                mascot_speech.set((MascotType::Kannappan, Some(text.clone())));
+                                game.write().speak_mascot_message(&text, "kannappan");
+                                spawn(async move {
+                                    gloo_timers::future::TimeoutFuture::new(3000).await;
+                                    mascot_speech.set((MascotType::Kannappan, None));
+                                });
+                            }
                         }
                     }
                 }
@@ -101,6 +116,7 @@ fn App() -> Element {
                 match game_state() {
                     GameState::Welcome => rsx! {
                         WelcomeScreen {
+                            game: game,
                             onstart: move |_| {
                                 game.write().reset_game();
                                 game.write().generate_question();
@@ -117,13 +133,17 @@ fn App() -> Element {
                                     let correct = game.write().check_answer(val);
                                     if correct {
                                         game.write().generate_question();
-                                        let text = "Correct!";
-                                        mascot_speech.set((MascotType::Thangamma, Some(text.to_string())));
-                                        game.write().speak_mascot_message(text, "thangamma");
+                                        let text = game.read().get_mascot_message("thangamma", "encouragement");
+                                        if !text.is_empty() {
+                                            mascot_speech.set((MascotType::Thangamma, Some(text.clone())));
+                                            game.write().speak_mascot_message(&text, "thangamma");
+                                        }
                                     } else {
-                                        let text = "Try Again!";
-                                        mascot_speech.set((MascotType::Kannappan, Some(text.to_string())));
-                                        game.write().speak_mascot_message(text, "kannappan");
+                                        let text = game.read().get_mascot_message("kannappan", "motivation");
+                                        if !text.is_empty() {
+                                            mascot_speech.set((MascotType::Kannappan, Some(text.clone())));
+                                            game.write().speak_mascot_message(&text, "kannappan");
+                                        }
                                     }
                                     spawn(async move {
                                         gloo_timers::future::TimeoutFuture::new(2000).await;
@@ -140,6 +160,7 @@ fn App() -> Element {
                     },
                     GameState::GameOver => rsx! {
                         GameOverScreen {
+                            game: game,
                             score: game.read().get_score(),
                             accuracy: game.read().get_accuracy(),
                             onrestart: move |_| {
