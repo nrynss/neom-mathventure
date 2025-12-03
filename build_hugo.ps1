@@ -25,7 +25,7 @@ Copy-Item "www/index.html" -Destination $distDir
 Copy-Item "www/css" -Destination $distDir -Recurse
 Copy-Item "www/js" -Destination $distDir -Recurse
 Copy-Item "www/locales" -Destination $distDir -Recurse
-Copy-Item "www/pkg" -Destination $distDir -Recurse     
+Copy-Item "pkg" -Destination $distDir -Recurse     
 Copy-Item "www/music" -Destination $distDir -Recurse
 
 Write-Host "Removing .gitignore files from build..."

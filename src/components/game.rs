@@ -127,7 +127,12 @@ impl NeomMathGame {
         });
         
         self.total_questions += 1;
+        self.total_questions += 1;
         question_text
+    }
+
+    pub fn current_question_text(&self) -> String {
+        self.current_question.as_ref().map(|q| q.text.clone()).unwrap_or_default()
     }
 
     fn create_question_params(&mut self) -> (i32, i32, Operation) {

@@ -1,14 +1,37 @@
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsCast;
 use web_sys::{AudioContext, OscillatorType, GainNode};
+use serde::{Deserialize, Serialize};
+use gloo_net::http::Request;
+use gloo_timers::callback::Interval;
+use std::cell::RefCell;
+use std::rc::Rc;
+
+use std::collections::HashMap;
+
+#[derive(Serialize, Deserialize, Clone)]
+struct NoteData {
+    note: String,
+    duration: f64,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+struct Melody {
+    title: String,
+    composer: String,
+    notes: Vec<NoteData>,
+    noteFrequencies: HashMap<String, f32>,
+}
 
 #[wasm_bindgen]
 pub struct MusicGenerator {
     audio_context: Option<AudioContext>,
     master_gain: Option<GainNode>,
-    is_playing: bool,
-    current_note: usize,
+    is_playing: Rc<RefCell<bool>>,
+    current_melody: Rc<RefCell<Option<Melody>>>,
+    current_note_index: Rc<RefCell<usize>>,
+    interval: Option<Interval>,
 }
+
 
 #[wasm_bindgen]
 impl MusicGenerator {
@@ -17,8 +40,10 @@ impl MusicGenerator {
         MusicGenerator {
             audio_context: None,
             master_gain: None,
-            is_playing: false,
-            current_note: 0,
+            is_playing: Rc::new(RefCell::new(false)),
+            current_melody: Rc::new(RefCell::new(None)),
+            current_note_index: Rc::new(RefCell::new(0)),
+            interval: None,
         }
     }
 
@@ -33,6 +58,21 @@ impl MusicGenerator {
                 self.audio_context = Some(ctx);
             }
         }
+    }
+
+    pub fn load_melody(&mut self, path: &str) {
+        let current_melody = self.current_melody.clone();
+        let path = path.to_string();
+        wasm_bindgen_futures::spawn_local(async move {
+            match Request::get(&path).send().await {
+                Ok(response) => {
+                    if let Ok(melody) = response.json::<Melody>().await {
+                        *current_melody.borrow_mut() = Some(melody);
+                    }
+                },
+                Err(_) => {}
+            }
+        });
     }
 
     fn play_note(&self, frequency: f32, start_time: f64, duration: f64) {
@@ -60,7 +100,7 @@ impl MusicGenerator {
     }
 
     pub fn start(&mut self) {
-        if self.is_playing {
+        if *self.is_playing.borrow() {
             return;
         }
 
@@ -70,62 +110,123 @@ impl MusicGenerator {
             let _ = ctx.resume();
         }
 
-        self.is_playing = true;
-        self.current_note = 0;
-        self.schedule_next_batch();
-        // JavaScript will handle the interval for continuous scheduling
+        *self.is_playing.borrow_mut() = true;
+        *self.current_note_index.borrow_mut() = 0;
+
+        // Clones for the async block
+        let current_melody = self.current_melody.clone();
+        let is_playing = self.is_playing.clone();
+        let current_note_index = self.current_note_index.clone();
+        
+        // Handle Option unwrapping safely or assume initialized
+        if self.audio_context.is_none() || self.master_gain.is_none() {
+             return;
+        }
+
+        let ctx_clone = self.audio_context.as_ref().unwrap().clone();
+        let gain_clone = self.master_gain.as_ref().unwrap().clone();
+
+        wasm_bindgen_futures::spawn_local(async move {
+            // Load if needed
+            if current_melody.borrow().is_none() {
+                let path = "music/ode_to_joy.json";
+                 match Request::get(path).send().await {
+                    Ok(response) => {
+                        if let Ok(melody) = response.json::<Melody>().await {
+                            *current_melody.borrow_mut() = Some(melody);
+                        }
+                    },
+                    Err(_) => {}
+                }
+            }
+
+            // Schedule first batch immediately if playing and loaded
+            if *is_playing.borrow() {
+                if let Some(melody) = &*current_melody.borrow() {
+                    let mut idx = current_note_index.borrow_mut();
+                    Self::schedule_batch_static(&ctx_clone, &gain_clone, melody, &mut idx);
+                }
+            }
+        });
+
+        // Start interval for subsequent batches
+        let is_playing_interval = self.is_playing.clone();
+        let current_melody_interval = self.current_melody.clone();
+        let current_note_index_interval = self.current_note_index.clone();
+        let ctx_interval = self.audio_context.as_ref().unwrap().clone();
+        let gain_interval = self.master_gain.as_ref().unwrap().clone();
+
+        self.interval = Some(Interval::new(3000, move || {
+            if *is_playing_interval.borrow() {
+                if let Some(melody) = &*current_melody_interval.borrow() {
+                    let mut idx = current_note_index_interval.borrow_mut();
+                    Self::schedule_batch_static(&ctx_interval, &gain_interval, melody, &mut idx);
+                }
+            }
+        }));
+    }
+
+    // Helper to be called from the interval
+    fn schedule_batch_static(
+        ctx: &AudioContext,
+        master_gain: &GainNode,
+        melody: &Melody,
+        note_index: &mut usize,
+    ) {
+        let current_time = ctx.current_time();
+        let mut time_offset = 0.0;
+        
+        for _ in 0..10 {
+            let idx = *note_index % melody.notes.len();
+            let note_data = &melody.notes[idx];
+            
+            if let Some(freq) = melody.noteFrequencies.get(&note_data.note) {
+                 if let Ok(osc) = ctx.create_oscillator() {
+                    if let Ok(gain) = ctx.create_gain() {
+                        let _ = osc.set_type(OscillatorType::Sine);
+                        let _ = osc.frequency().set_value(*freq);
+                        
+                        let start = current_time + time_offset;
+                        let duration = note_data.duration;
+                        
+                        let _ = gain.gain().set_value_at_time(0.0, start);
+                        let _ = gain.gain().linear_ramp_to_value_at_time(0.3, start + 0.05);
+                        let _ = gain.gain().linear_ramp_to_value_at_time(0.2, start + 0.1);
+                        let _ = gain.gain().set_value_at_time(0.2, start + duration - 0.1);
+                        let _ = gain.gain().linear_ramp_to_value_at_time(0.0, start + duration);
+                        
+                        let _ = osc.connect_with_audio_node(&gain);
+                        let _ = gain.connect_with_audio_node(master_gain);
+                        let _ = osc.start_with_when(start);
+                        let _ = osc.stop_with_when(start + duration);
+                    }
+                 }
+                 time_offset += note_data.duration;
+            }
+            *note_index += 1;
+        }
     }
 
     fn schedule_next_batch(&mut self) {
-        if !self.is_playing {
-            return;
-        }
-
-        if let Some(ctx) = &self.audio_context {
-            // Pentatonic scale: C4, D4, E4, G4, A4, C5
-            let scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
-            
-            // Pleasant melodic pattern (repeats every 8 notes)
-            let pattern = [0, 2, 4, 2, 1, 3, 4, 0];
-            
-            let current_time = ctx.current_time();
-            let tempo = 120.0; // BPM
-            let seconds_per_beat = 60.0 / tempo;
-            let note_duration = 0.45;
-            
-            // Schedule next 8 notes (4 seconds of music)
-            for i in 0..8 {
-                let note_idx = (self.current_note + i) % pattern.len();
-                let scale_idx = pattern[note_idx];
-                let frequency = scale[scale_idx];
-                let start_time = current_time + (i as f64 * seconds_per_beat);
-                
-                self.play_note(frequency, start_time, note_duration);
+        if let (Some(ctx), Some(gain)) = (&self.audio_context, &self.master_gain) {
+            if let Some(melody) = &*self.current_melody.borrow() {
+                let mut idx = self.current_note_index.borrow_mut();
+                Self::schedule_batch_static(ctx, gain, melody, &mut idx);
             }
-            
-            self.current_note = (self.current_note + 8) % pattern.len();
-        }
-    }
-
-    pub fn schedule_more_notes(&mut self) {
-        if self.is_playing {
-            self.schedule_next_batch();
         }
     }
 
     pub fn stop(&mut self) {
-        self.is_playing = false;
-        
-        // Disconnect audio context
+        *self.is_playing.borrow_mut() = false;
+        self.interval = None;
         if let Some(gain) = &self.master_gain {
             let _ = gain.disconnect();
         }
-        
         self.audio_context = None;
         self.master_gain = None;
     }
 
     pub fn is_playing(&self) -> bool {
-        self.is_playing
+        *self.is_playing.borrow()
     }
 }
