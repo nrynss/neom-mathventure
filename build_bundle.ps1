@@ -17,7 +17,9 @@ New-Item -ItemType Directory -Force -Path $distDir | Out-Null
 Write-Host "Copying assets..."
 Copy-Item "www/index.html" -Destination $distDir
 Copy-Item "www/css" -Destination $distDir -Recurse
-Copy-Item "www/js" -Destination $distDir -Recurse
+if (Test-Path "www/js") {
+    Copy-Item "www/js" -Destination $distDir -Recurse
+}
 Copy-Item "www/locales" -Destination $distDir -Recurse
 Copy-Item "www/music" -Destination $distDir -Recurse
 Copy-Item "pkg" -Destination $distDir -Recurse

@@ -19,7 +19,8 @@ struct Melody {
     title: String,
     composer: String,
     notes: Vec<NoteData>,
-    noteFrequencies: HashMap<String, f32>,
+    #[serde(rename = "noteFrequencies")]
+    note_frequencies: HashMap<String, f32>,
 }
 
 #[wasm_bindgen]
@@ -75,29 +76,7 @@ impl MusicGenerator {
         });
     }
 
-    fn play_note(&self, frequency: f32, start_time: f64, duration: f64) {
-        if let (Some(ctx), Some(master_gain)) = (&self.audio_context, &self.master_gain) {
-            if let Ok(osc) = ctx.create_oscillator() {
-                if let Ok(gain) = ctx.create_gain() {
-                    let _ = osc.set_type(OscillatorType::Sine);
-                    let _ = osc.frequency().set_value(frequency);
-                    
-                    // ADSR envelope
-                    let _ = gain.gain().set_value_at_time(0.0, start_time);
-                    let _ = gain.gain().linear_ramp_to_value_at_time(0.3, start_time + 0.05);
-                    let _ = gain.gain().linear_ramp_to_value_at_time(0.2, start_time + 0.1);
-                    let _ = gain.gain().set_value_at_time(0.2, start_time + duration - 0.1);
-                    let _ = gain.gain().linear_ramp_to_value_at_time(0.0, start_time + duration);
-                    
-                    let _ = osc.connect_with_audio_node(&gain);
-                    let _ = gain.connect_with_audio_node(master_gain);
-                    
-                    let _ = osc.start_with_when(start_time);
-                    let _ = osc.stop_with_when(start_time + duration);
-                }
-            }
-        }
-    }
+
 
     pub fn start(&mut self) {
         if *self.is_playing.borrow() {
@@ -180,7 +159,7 @@ impl MusicGenerator {
             let idx = *note_index % melody.notes.len();
             let note_data = &melody.notes[idx];
             
-            if let Some(freq) = melody.noteFrequencies.get(&note_data.note) {
+            if let Some(freq) = melody.note_frequencies.get(&note_data.note) {
                  if let Ok(osc) = ctx.create_oscillator() {
                     if let Ok(gain) = ctx.create_gain() {
                         let _ = osc.set_type(OscillatorType::Sine);
@@ -207,14 +186,7 @@ impl MusicGenerator {
         }
     }
 
-    fn schedule_next_batch(&mut self) {
-        if let (Some(ctx), Some(gain)) = (&self.audio_context, &self.master_gain) {
-            if let Some(melody) = &*self.current_melody.borrow() {
-                let mut idx = self.current_note_index.borrow_mut();
-                Self::schedule_batch_static(ctx, gain, melody, &mut idx);
-            }
-        }
-    }
+
 
     pub fn stop(&mut self) {
         *self.is_playing.borrow_mut() = false;

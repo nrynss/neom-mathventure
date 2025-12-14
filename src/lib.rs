@@ -12,7 +12,7 @@ pub fn start() {
     #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();
     
-    dioxus::launch(App);
+    dioxus::launch(app);
 }
 
 #[derive(Clone, PartialEq)]
@@ -22,7 +22,7 @@ enum GameState {
     GameOver,
 }
 
-fn App() -> Element {
+fn app() -> Element {
     let mut game = use_signal(|| NeomMathGame::new());
     let mut game_state = use_signal(|| GameState::Welcome);
     let mut mascot_speech = use_signal(|| (MascotType::Thangamma, None::<String>));
