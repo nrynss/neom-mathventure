@@ -12,7 +12,7 @@ if (-not $?) {
     exit 1
 }
 
-$distDir = "hugo_dist/neom-mathventure"
+$distDir = "hugo_dist/neom"
 
 # Create distribution directory
 if (Test-Path $distDir) {
@@ -35,6 +35,6 @@ Get-ChildItem -Path $distDir -Filter ".gitignore" -Recurse | Remove-Item -Force
 Write-Host "Build complete!"
 Write-Host "To host in Hugo:"
 Write-Host "1. Copy the contents of 'hugo_dist' to your Hugo site's 'static' folder."
-Write-Host "   (You should have 'static/neom-mathventure/...')"
+Write-Host "   (You should have 'static/neom/...')"
 Write-Host "2. Run your Hugo server."
-Write-Host "3. Access the game at /neom-mathventure/"
+Write-Host "3. Access the game at /neom/"
