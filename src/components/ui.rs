@@ -76,8 +76,7 @@ pub fn GameScreen(
                             }
                         }
                     }
-                    // Mic button placeholder - implementation requires more JS interop
-                    button { class: "icon-button", title: "Speak Answer", "🎤" }
+
                     button {
                         id: "check-btn",
                         class: "primary-button",

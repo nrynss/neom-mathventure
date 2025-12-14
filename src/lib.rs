@@ -26,6 +26,7 @@ fn App() -> Element {
     let mut game = use_signal(|| NeomMathGame::new());
     let mut game_state = use_signal(|| GameState::Welcome);
     let mut mascot_speech = use_signal(|| (MascotType::Thangamma, None::<String>));
+    let mut mascot_turn = use_signal(|| MascotType::Thangamma);
 
     // Game Loop
     use_future(move || async move {
@@ -133,10 +134,24 @@ fn App() -> Element {
                                     let correct = game.write().check_answer(val);
                                     if correct {
                                         game.write().generate_question();
-                                        let text = game.read().get_mascot_message("thangamma", "encouragement");
+                                        
+                                        let speaker = mascot_turn();
+                                        mascot_turn.set(if speaker == MascotType::Thangamma { MascotType::Kannappan } else { MascotType::Thangamma });
+
+                                        let (text, mascot_name) = match speaker {
+                                            MascotType::Thangamma => (
+                                                game.read().get_mascot_message("thangamma", "encouragement"),
+                                                "thangamma"
+                                            ),
+                                            MascotType::Kannappan => (
+                                                game.read().get_mascot_message("kannappan", "celebrations"),
+                                                "kannappan"
+                                            ),
+                                        };
+
                                         if !text.is_empty() {
-                                            mascot_speech.set((MascotType::Thangamma, Some(text.clone())));
-                                            game.write().speak_mascot_message(&text, "thangamma");
+                                            mascot_speech.set((speaker, Some(text.clone())));
+                                            game.write().speak_mascot_message(&text, mascot_name);
                                         }
                                     } else {
                                         let text = game.read().get_mascot_message("kannappan", "motivation");
